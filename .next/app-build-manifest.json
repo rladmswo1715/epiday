@@ -11,20 +11,15 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(beforeLogin)/signup/page": [
+    "/(beforeLogin)/login/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(beforeLogin)/signup/page.js"
+      "static/chunks/app/(beforeLogin)/login/page.js"
     ],
     "/(beforeLogin)/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(beforeLogin)/layout.js"
-    ],
-    "/(beforeLogin)/login/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(beforeLogin)/login/page.js"
     ]
   }
 }
