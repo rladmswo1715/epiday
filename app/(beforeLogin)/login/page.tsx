@@ -1,10 +1,8 @@
 import Image from 'next/image';
 import Logo from '@/public/images/icon/logo.svg';
-import Stroke from '@/public/images/icon/stroke.svg';
-import Google from '@/public/images/icon/logo_google.svg';
-import Kakao from '@/public/images/icon/logo_kakao.svg';
 import OffEye from '@/public/images/icon/off_eye.svg';
 import Link from 'next/link';
+import SnsLogin from '@/components/SignSns';
 
 export default function Login() {
   return (
@@ -30,21 +28,7 @@ export default function Login() {
         </div>
       </div>
 
-      <div>
-        <div className='flex gap-[2.4rem]'>
-          <Image src={Stroke} alt='SNS 스트로크' width={180} height={1} />
-          <span className='text-[2rem] leading-[2.6rem] text-var-blue-400'>SNS 계정으로 로그인하기</span>
-          <Image src={Stroke} alt='SNS 스트로크' width={180} height={1} />
-        </div>
-        <div className='mt-[4rem] flex justify-center gap-[1.6rem]'>
-          <button>
-            <Image src={Google} alt='구글 로고' width={60} height={60} />
-          </button>
-          <button>
-            <Image src={Kakao} alt='카카오 로고' width={60} height={60} />
-          </button>
-        </div>
-      </div>
+      <SnsLogin pageType='login' />
     </section>
   );
 }

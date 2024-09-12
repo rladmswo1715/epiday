@@ -61,6 +61,13 @@ module.exports = {
         sm: { max: '768px' }, // mobile
         md: { max: '1024px' }, // tablet
       },
+      zIndex: {
+        dropdown: 900,
+        sticky: 980,
+        fixed: 981,
+        modalBackdrop: 990,
+        modal: 991,
+      },
     },
   },
   plugins: [],
