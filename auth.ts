@@ -27,19 +27,22 @@ export const {
               password: credentials.password,
             }),
           });
-
+          const user = await res.json();
           if (!res.ok) {
-            return null;
+            throw new Error(user.message || '로그인 실패');
           }
 
-          const user = await res.json();
           return user;
         } catch (e) {
-          console.error('authorize 에러:', e);
-          return null;
+          throw new Error(e.message || '인증 실패');
         }
       },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  logger: {
+    error: () => {},
+    warn: () => {},
+    debug: () => {},
+  },
 });

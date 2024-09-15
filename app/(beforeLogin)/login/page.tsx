@@ -33,13 +33,12 @@ export default function Login() {
         redirect: false,
       });
       if (response?.error) {
-        setMessage('아이디와 비밀번호가 일치하지 않습니다.');
+        setMessage('아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.');
       } else {
         router.replace('/');
       }
     } catch (error) {
-      console.error(error);
-      setMessage('아이디와 비밀번호가 일치하지 않습니다.');
+      setMessage('아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.');
     }
   };
 
@@ -73,7 +72,7 @@ export default function Login() {
         </form>
         <div className='mt-[1rem] flex items-center justify-end gap-[0.8rem] pr-[0.8rem] text-[2rem] font-[500]'>
           <span className='text-var-blue-400'>회원이 아니신가요?</span>
-          <Link href={'/'} className='leading-[2.6rem] text-var-black-500 underline'>
+          <Link href={'/signup'} className='leading-[2.6rem] text-var-black-500 underline'>
             가입하기
           </Link>
         </div>
