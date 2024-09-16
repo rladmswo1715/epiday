@@ -16,7 +16,7 @@ export const postSignUp = async (userInputData: IPostSignUpParam) => {
     });
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || '회원가입 실패');
+      throw { message: errorData.message || '회원가입 실패', details: errorData.details };
     }
 
     const data = await response.json();

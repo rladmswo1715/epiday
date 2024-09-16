@@ -11,7 +11,6 @@ interface IAuthInputProps {
 
 const AuthInput = forwardRef<HTMLInputElement, IAuthInputProps>(({ isValueOpen = false, placeholderText, errorMessage, ...rest }, ref) => {
   const [inputType, setInputType] = useState(isValueOpen);
-  const [icon, setIcon] = useState(OffEye);
 
   const handleShowClick = () => {
     setInputType(!inputType);
@@ -33,7 +32,7 @@ const AuthInput = forwardRef<HTMLInputElement, IAuthInputProps>(({ isValueOpen =
           </button>
         )}
       </div>
-      {errorMessage && <span className='leading-[2.6rem] text-var-error'>{errorMessage}</span>}
+      {errorMessage && <span className='text-[1.6rem] leading-[2.6rem] text-var-error'>{errorMessage}</span>}
     </div>
   );
 });
