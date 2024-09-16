@@ -1,35 +1,61 @@
 'use client';
 
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Logo from '@/public/images/icon/logo.svg';
-import OffEye from '@/public/images/icon/off_eye.svg';
 import Link from 'next/link';
 import SnsLogin from '@/components/SignSns';
-import { ChangeEventHandler, FormEventHandler, useState } from 'react';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import AuthInput from '@/components/input/AuthInput';
+import Spinner from '@/components/Spinner';
+
+const loginSchema = z.object({
+  email: z.string().email('id는 이메일 형식입니다.'),
+  password: z.string().min(1, '비밀번호를 입력해 주세요.'),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
   const router = useRouter();
 
-  const onChangeEmail: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setEmail(e.target.value);
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    trigger,
+  } = useForm<LoginSchema>({
+    mode: 'onSubmit',
+    resolver: zodResolver(loginSchema),
+  });
 
-  const onChangePassword: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data: LoginSchema) => {
     setMessage('');
+    setFormErrors({});
+    setLoading(true);
+
+    // 유효성 검사 트리거
+    const isValid = await trigger();
+    if (!isValid) {
+      setFormErrors({
+        email: errors.email?.message,
+        password: errors.password?.message,
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await signIn('credentials', {
-        email,
-        password,
+        email: data.email,
+        password: data.password,
         redirect: false,
       });
       if (response?.error) {
@@ -38,37 +64,29 @@ export default function Login() {
         router.replace('/');
       }
     } catch (error) {
-      setMessage('아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.');
+      setMessage('로그인 오류 발생');
+    } finally {
+      setLoading(false);
     }
   };
 
+  const combinedMessage = message || formErrors.email || formErrors.password;
+
   return (
-    <section className='flex w-[64rem] flex-col items-center gap-[6rem] pb-[21.9rem] pt-[21.3rem]'>
+    <section className='relative flex w-[64rem] flex-col items-center gap-[6rem] pb-[21.9rem] pt-[21.3rem]'>
+      {loading && <Spinner />}
       <Image src={Logo} alt='로고' width={152} height={48} />
 
       <div className='w-[100%]'>
-        <form className='flex flex-col gap-[1.6rem]' onSubmit={onSubmit}>
-          <input
-            type='text'
-            value={email}
-            className='h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 bg-var-background p-[1.6rem] text-[2rem] outline-none'
-            placeholder='이메일'
-            onChange={onChangeEmail}
-          />
-          <div className='relative'>
-            <input
-              type='password'
-              value={password}
-              className='h-[6.4rem] w-full rounded-[1.2rem] border-[0.1rem] border-var-blue-300 bg-var-background p-[1.6rem] text-[2rem] outline-none'
-              onChange={onChangePassword}
-              placeholder='비밀번호'
-            />
-            <button className='absolute right-[1.6rem] top-[50%] translate-y-[-50%]'>
-              <Image src={OffEye} alt='비밀번호' width={24} height={24} />
-            </button>
-          </div>
-          <div>{message}</div>
-          <button className='h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-200 bg-var-blue-300 text-[2rem] font-[600] text-[#FFF]'>로그인</button>
+        <form className='flex flex-col gap-[1.6rem]' onSubmit={handleSubmit(onSubmit)}>
+          <AuthInput {...register('email')} placeholderText='이메일' />
+          <AuthInput isValueOpen {...register('password')} placeholderText='비밀번호' errorMessage={combinedMessage} />
+          <button
+            className={`h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-200 ${isValid ? 'bg-var-black-500' : 'bg-var-blue-300'} text-[2rem] font-[600] text-[#FFF]`}
+            disabled={!isValid}
+          >
+            로그인
+          </button>
         </form>
         <div className='mt-[1rem] flex items-center justify-end gap-[0.8rem] pr-[0.8rem] text-[2rem] font-[500]'>
           <span className='text-var-blue-400'>회원이 아니신가요?</span>
