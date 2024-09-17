@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import Kakao from 'next-auth/providers/kakao';
 import BASE_URL from '@/constant/url';
 
 export const {
@@ -37,6 +38,10 @@ export const {
           throw new Error(e.message || '인증 실패');
         }
       },
+    }),
+    Kakao({
+      clientId: process.env.AUTH_KAKAO_ID,
+      // clientSecret: process.env.AUTH_KAKAO_SECRET,
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,

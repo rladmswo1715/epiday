@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Stroke from '@/public/images/icon/stroke.svg';
 import Google from '@/public/images/icon/logo_google.svg';
 import Kakao from '@/public/images/icon/logo_kakao.svg';
+import { signIn } from 'next-auth/react';
 
 interface ISignSnsProps {
   pageType: 'login' | 'signUp';
@@ -9,6 +10,13 @@ interface ISignSnsProps {
 
 export default function SignSns({ pageType }: ISignSnsProps) {
   const infoText = `SNS 계정으로 ${pageType === 'login' ? '로그인하기' : '간편 가입하기'}`;
+
+  const kakaoLogin = async () => {
+    await signIn('kakao', {
+      redirect: true,
+      callbackUrl: '/',
+    });
+  };
 
   return (
     <div>
@@ -21,7 +29,7 @@ export default function SignSns({ pageType }: ISignSnsProps) {
         <button>
           <Image src={Google} alt='구글 로그인' width={60} height={60} />
         </button>
-        <button>
+        <button onClick={kakaoLogin}>
           <Image src={Kakao} alt='카카오 로그인' width={60} height={60} />
         </button>
       </div>
