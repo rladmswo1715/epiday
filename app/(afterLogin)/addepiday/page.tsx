@@ -1,51 +1,87 @@
+'use client';
+
 import ContentTitle from '@/components/ContentTitle';
+import TextInput from '@/components/input/TextInput';
 import RadioButton from '@/components/RadioButton';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, useWatch } from 'react-hook-form';
+import { z } from 'zod';
+
+const addEpidaySchema = z
+  .object({
+    content: z.string().min(1, '내용을 입력해주세요.'),
+    author: z.enum(['write', 'unknown', 'self']),
+    authorName: z.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.author === 'write' && !data.authorName) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['authorName'],
+        message: '저자 이름을 입력해주세요.',
+      });
+    }
+  });
+
+type AddEpidaySchema = z.infer<typeof addEpidaySchema>;
 
 const AddEpiday = () => {
-  const isValid = true;
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+  } = useForm<AddEpidaySchema>({
+    mode: 'onChange',
+    resolver: zodResolver(addEpidaySchema),
+  });
+
+  const content = useWatch({
+    control,
+    defaultValue: '',
+    name: 'content',
+  });
+
+  const onSubmit = (data: AddEpidaySchema) => {
+    console.log(data);
+  };
+
   return (
     <section className='w-[64rem] pb-[5.2rem] pt-[5.6rem] sm:px-[2.4rem] sm:pb-[3rem] sm:pt-[2.4rem]'>
       <h2 className='mb-[4rem] text-[2.4rem] font-[600] leading-[3.2rem] sm:text-[1.6rem] sm:leading-[2.6rem]'>에피데이 만들기</h2>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-[5.4rem] sm:gap-[4rem]'>
           <ContentTitle contentTitle='내용' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]' isRequired>
             <textarea
-              className='scrollbar-hide h-[14.8rem] w-[100%] overflow-scroll rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1rem] py-[1.6rem] text-[2rem] sm:text-[1.6rem] sm:leading-[2.6rem]'
+              className='h-[14.8rem] w-[100%] overflow-scroll rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1rem] py-[1.6rem] text-[2rem] scrollbar-hide sm:text-[1.6rem] sm:leading-[2.6rem]'
               placeholder='500자 이내로 입력해주세요.'
+              {...register('content')}
             />
+            <div className='mt-[0.6rem] flex justify-between text-[1.6rem] leading-[2.6rem] sm:text-[1.3rem] sm:leading-[2.2rem]'>
+              <span className='text-var-error'>{errors.content?.message}</span>
+              <span className='text-var-black-300'>{content.length}/500</span>
+            </div>
           </ContentTitle>
           <ContentTitle contentTitle='저자' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]' isRequired>
             <div className='flex gap-[2.4rem]'>
-              <RadioButton name='author' value='a' defaultChecked>
+              <RadioButton name='author' value='write' register={register} defaultChecked>
                 직접 입력
               </RadioButton>
-              <RadioButton name='author' value='a'>
+              <RadioButton name='author' register={register} value='unknown'>
                 알 수 없음
               </RadioButton>
-              <RadioButton name='author' value='a'>
+              <RadioButton name='author' register={register} value='self'>
                 본인
               </RadioButton>
             </div>
-            <input
-              className='mt-[1.6rem] h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1.6rem] text-[2rem] sm:mt-[1.2rem] sm:h-[4.4rem] sm:text-[1.6rem] sm:leading-[2.6rem]'
-              placeholder='저자 이름 입력'
-            />
+            <TextInput cssStyle='mt-[1.6rem] sm:mt-[1.2rem]' placeholder='저자 이름 입력' {...register('authorName')} />
           </ContentTitle>
           <ContentTitle contentTitle='출처' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]'>
-            <input
-              className='h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1.6rem] text-[2rem] sm:h-[4.4rem] sm:text-[1.6rem] sm:leading-[2.6rem]'
-              placeholder='출처 제목 입력'
-            />
-            <input
-              className='mt-[1.6rem] h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1.6rem] text-[2rem] sm:h-[4.4rem] sm:text-[1.6rem] sm:leading-[2.6rem]'
-              placeholder='URL (ex. https://www.website.com)'
-            />
+            <TextInput placeholder='출처 제목 입력' />
+            <TextInput cssStyle='mt-[1.6rem] sm:mt-[0.8rem]' placeholder='URL (ex. https://www.website.com)' />
           </ContentTitle>
           <ContentTitle contentTitle='태그' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]'>
-            <input
-              className='h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1.6rem] text-[2rem] sm:h-[4.4rem] sm:text-[1.6rem] sm:leading-[2.6rem]'
-              placeholder='입력하여 태그 작성 (최대 10자)'
-            />
+            <TextInput placeholder='입력하여 태그 작성 (최대 10자)' />
             <div className='mt-[2.2rem] flex flex-wrap gap-[1rem] sm:mt-[1.5rem] sm:gap-[0.8rem]'>
               <span className='rounded-[2.2rem] bg-var-background px-[1.2rem] py-[1.4rem] text-[2.4rem] leading-[2.6rem] text-var-black-300 sm:py-[0.8rem] sm:text-[1.6rem]'>공유하고싶은명언추가</span>
               <span className='rounded-[2.2rem] bg-var-background px-[1.2rem] py-[1.4rem] text-[2.4rem] text-var-black-300 sm:py-[0.8rem] sm:text-[1.6rem]'>공유하고싶은명언추가</span>
@@ -59,6 +95,9 @@ const AddEpiday = () => {
         >
           작성 완료
         </button>
+        <span>{errors.author?.message}</span>
+        <span>{errors.content?.message}</span>
+        <span>{errors.authorName?.message}</span>
       </form>
     </section>
   );
