@@ -4,6 +4,7 @@ import ContentTitle from '@/components/ContentTitle';
 import TextInput from '@/components/input/TextInput';
 import RadioButton from '@/components/RadioButton';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -12,6 +13,13 @@ const addEpidaySchema = z
     content: z.string().min(1, '내용을 입력해주세요.'),
     author: z.enum(['write', 'unknown', 'self']),
     authorName: z.string().optional(),
+    referenceTitle: z.string().optional(),
+    referenceUrl: z
+      .string()
+      .optional()
+      .refine((value) => !value || /^https?:\/\/.+/.test(value), {
+        message: '유효한 URL을 입력해주세요. (ex. https:// ~)',
+      }),
   })
   .superRefine((data, ctx) => {
     if (data.author === 'write' && !data.authorName) {
@@ -30,7 +38,9 @@ const AddEpiday = () => {
     register,
     handleSubmit,
     control,
+    setValue, // 저자 본인 선택했을 때 내 이름 가져오기 할 때 필요해서 사용
     formState: { errors, isValid },
+    clearErrors,
   } = useForm<AddEpidaySchema>({
     mode: 'onChange',
     resolver: zodResolver(addEpidaySchema),
@@ -41,6 +51,26 @@ const AddEpiday = () => {
     defaultValue: '',
     name: 'content',
   });
+
+  const author = useWatch({
+    control,
+    defaultValue: 'write',
+    name: 'author',
+  });
+
+  // 저자 본인 선택했을 때 내 이름 가져오기
+  useEffect(() => {
+    clearErrors('authorName');
+
+    if (author === 'self') {
+      setValue('authorName', '홍길동');
+    } else if (author === 'unknown') {
+      setValue('authorName', '알 수 없음');
+    } else {
+      setValue('authorName', '');
+    }
+  }, [author, setValue]);
+  // -----------------
 
   const onSubmit = (data: AddEpidaySchema) => {
     console.log(data);
@@ -53,7 +83,8 @@ const AddEpiday = () => {
         <div className='flex flex-col gap-[5.4rem] sm:gap-[4rem]'>
           <ContentTitle contentTitle='내용' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]' isRequired>
             <textarea
-              className='h-[14.8rem] w-[100%] overflow-scroll rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1rem] py-[1.6rem] text-[2rem] scrollbar-hide sm:text-[1.6rem] sm:leading-[2.6rem]'
+              className={`h-[14.8rem] w-[100%] overflow-scroll rounded-[1.2rem] border-[0.1rem] ${errors.content ? 'border-var-error' : 'border-var-blue-300'} px-[1rem] py-[1.6rem] text-[2rem] scrollbar-hide focus:outline-none sm:text-[1.6rem] sm:leading-[2.6rem]`}
+              maxLength={500}
               placeholder='500자 이내로 입력해주세요.'
               {...register('content')}
             />
@@ -74,11 +105,13 @@ const AddEpiday = () => {
                 본인
               </RadioButton>
             </div>
-            <TextInput cssStyle='mt-[1.6rem] sm:mt-[1.2rem]' placeholder='저자 이름 입력' {...register('authorName')} />
+            <TextInput cssStyle='mt-[1.6rem] sm:mt-[1.2rem]' placeholder='저자 이름 입력' maxLength={30} disabled={author === 'unknown' || author === 'self'} {...register('authorName')} />
+            <span className='mt-[0.6rem] text-[1.6rem] leading-[2.6rem] text-var-error sm:text-[1.3rem] sm:leading-[2.2rem]'>{errors.authorName?.message}</span>
           </ContentTitle>
           <ContentTitle contentTitle='출처' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]'>
-            <TextInput placeholder='출처 제목 입력' />
-            <TextInput cssStyle='mt-[1.6rem] sm:mt-[0.8rem]' placeholder='URL (ex. https://www.website.com)' />
+            <TextInput placeholder='출처 제목 입력' maxLength={100} {...register('referenceTitle')} />
+            <TextInput cssStyle='mt-[1.6rem] sm:mt-[0.8rem]' placeholder='URL (ex. https://www.website.com)' {...register('referenceUrl')} />
+            <span className='mt-[0.6rem] text-[1.6rem] leading-[2.6rem] text-var-error sm:text-[1.3rem] sm:leading-[2.2rem]'>{errors.referenceUrl?.message}</span>
           </ContentTitle>
           <ContentTitle contentTitle='태그' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]'>
             <TextInput placeholder='입력하여 태그 작성 (최대 10자)' />
