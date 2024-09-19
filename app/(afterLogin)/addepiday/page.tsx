@@ -1,12 +1,14 @@
 'use client';
 
 import ContentTitle from '@/components/ContentTitle';
+import AddTagInput from '@/components/tag/AddTagInput';
 import TextInput from '@/components/input/TextInput';
 import RadioButton from '@/components/RadioButton';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
+import TagContent from '@/components/tag/TagContent';
 
 const addEpidaySchema = z
   .object({
@@ -58,19 +60,17 @@ const AddEpiday = () => {
     name: 'author',
   });
 
-  // 저자 본인 선택했을 때 내 이름 가져오기
   useEffect(() => {
     clearErrors('authorName');
 
     if (author === 'self') {
-      setValue('authorName', '홍길동');
+      setValue('authorName', '홍길동'); // 저자 본인 선택했을 때 내 이름 가져오기
     } else if (author === 'unknown') {
       setValue('authorName', '알 수 없음');
     } else {
       setValue('authorName', '');
     }
   }, [author, setValue]);
-  // -----------------
 
   const onSubmit = (data: AddEpidaySchema) => {
     console.log(data);
@@ -114,12 +114,7 @@ const AddEpiday = () => {
             <span className='mt-[0.6rem] text-[1.6rem] leading-[2.6rem] text-var-error sm:text-[1.3rem] sm:leading-[2.2rem]'>{errors.referenceUrl?.message}</span>
           </ContentTitle>
           <ContentTitle contentTitle='태그' fontSizeStyle='text-[2rem] sm:text-[1.4rem]' marginStyle='mb-[2.4rem] sm:mb-[0.8rem]'>
-            <TextInput placeholder='입력하여 태그 작성 (최대 10자)' />
-            <div className='mt-[2.2rem] flex flex-wrap gap-[1rem] sm:mt-[1.5rem] sm:gap-[0.8rem]'>
-              <span className='rounded-[2.2rem] bg-var-background px-[1.2rem] py-[1.4rem] text-[2.4rem] leading-[2.6rem] text-var-black-300 sm:py-[0.8rem] sm:text-[1.6rem]'>공유하고싶은명언추가</span>
-              <span className='rounded-[2.2rem] bg-var-background px-[1.2rem] py-[1.4rem] text-[2.4rem] text-var-black-300 sm:py-[0.8rem] sm:text-[1.6rem]'>공유하고싶은명언추가</span>
-              <span className='rounded-[2.2rem] bg-var-background px-[1.2rem] py-[1.4rem] text-[2.4rem] text-var-black-300 sm:py-[0.8rem] sm:text-[1.6rem]'>공유하고싶22가</span>
-            </div>
+            <TagContent />
           </ContentTitle>
         </div>
         <button
