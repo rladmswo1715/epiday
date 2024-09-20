@@ -1,7 +1,6 @@
 'use client';
 
 import ContentTitle from '@/components/ContentTitle';
-import AddTagInput from '@/components/tag/AddTagInput';
 import TextInput from '@/components/input/TextInput';
 import RadioButton from '@/components/RadioButton';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,6 +8,8 @@ import { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import TagContent from '@/components/tag/TagContent';
+import { useTagStore } from '@/store/tagStore';
+import { postAddEpiday } from '@/api/postEpiday';
 
 const addEpidaySchema = z
   .object({
@@ -48,6 +49,8 @@ const AddEpiday = () => {
     resolver: zodResolver(addEpidaySchema),
   });
 
+  const { tagList } = useTagStore();
+
   const content = useWatch({
     control,
     defaultValue: '',
@@ -72,8 +75,8 @@ const AddEpiday = () => {
     }
   }, [author, setValue]);
 
-  const onSubmit = (data: AddEpidaySchema) => {
-    console.log(data);
+  const onSubmit = async (data: AddEpidaySchema) => {
+    console.log({ tags: tagList, ...data });
   };
 
   return (
@@ -123,9 +126,6 @@ const AddEpiday = () => {
         >
           작성 완료
         </button>
-        <span>{errors.author?.message}</span>
-        <span>{errors.content?.message}</span>
-        <span>{errors.authorName?.message}</span>
       </form>
     </section>
   );
