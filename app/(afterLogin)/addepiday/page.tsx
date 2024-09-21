@@ -9,7 +9,8 @@ import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import TagContent from '@/components/tag/TagContent';
 import { useTagStore } from '@/store/tagStore';
-import { postAddEpiday } from '@/api/postEpiday';
+
+import { getSession, useSession } from 'next-auth/react';
 
 const addEpidaySchema = z
   .object({
@@ -50,6 +51,7 @@ const AddEpiday = () => {
   });
 
   const { tagList } = useTagStore();
+  const { data: session } = useSession();
 
   const content = useWatch({
     control,
@@ -65,7 +67,7 @@ const AddEpiday = () => {
 
   useEffect(() => {
     clearErrors('authorName');
-
+    console.log(session);
     if (author === 'self') {
       setValue('authorName', '홍길동'); // 저자 본인 선택했을 때 내 이름 가져오기
     } else if (author === 'unknown') {
@@ -75,9 +77,7 @@ const AddEpiday = () => {
     }
   }, [author, setValue]);
 
-  const onSubmit = async (data: AddEpidaySchema) => {
-    console.log({ tags: tagList, ...data });
-  };
+  const onSubmit = async (data: AddEpidaySchema) => {};
 
   return (
     <section className='w-[64rem] pb-[5.2rem] pt-[5.6rem] sm:px-[2.4rem] sm:pb-[3rem] sm:pt-[2.4rem]'>

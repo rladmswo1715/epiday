@@ -28,12 +28,19 @@ export const {
               password: credentials.password,
             }),
           });
-          const user = await res.json();
+          let setCookie = res.headers.get('Set-Cookie');
+          console.log('set-cookie', setCookie);
+          const data = await res.json();
+
           if (!res.ok) {
-            throw new Error(user.message || '로그인 실패');
+            throw new Error(data.message || '로그인 실패');
           }
 
-          return user;
+          return {
+            ...data.user,
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+          };
         } catch (e) {
           throw new Error(e.message || '인증 실패');
         }
@@ -44,6 +51,31 @@ export const {
       // clientSecret: process.env.AUTH_KAKAO_SECRET,
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.nickname = user.name;
+        token.email = user.email;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.id = token.id as string;
+        session.nickname = token.nickname as string;
+        session.email = token.email as string;
+        session.accessToken = token.accessToken as string;
+        session.refreshToken = token.refreshToken as string;
+      }
+      return session;
+    },
+  },
+  session: {
+    strategy: 'jwt',
+  },
   secret: process.env.NEXTAUTH_SECRET,
   logger: {
     error: () => {},

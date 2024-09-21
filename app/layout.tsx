@@ -1,3 +1,4 @@
+import AuthSession from '@/components/provider/SessionProvider';
 import '@/styles/globals.css';
 
 export const metadata = {
@@ -8,7 +9,10 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang='ko'>
-      <body>{children}</body>
+      <body>
+        {' '}
+        <AuthSession>{children}</AuthSession>
+      </body>
     </html>
   );
 }
