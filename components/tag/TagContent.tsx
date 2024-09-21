@@ -14,7 +14,6 @@ const TagContent = () => {
   };
 
   const handleAddTagList = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
     if (!['Enter', 'NumpadEnter'].includes(e.code) || tagList.length >= 3) return;
 
     const newTagValue = removeSpaces(tagInputValue);
@@ -25,9 +24,15 @@ const TagContent = () => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === 'NumpadEnter') {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
-      <AddTagInput value={tagInputValue} onChange={handleInputChange} onKeyup={handleAddTagList} />
+      <AddTagInput value={tagInputValue} onChange={handleInputChange} onKeyup={handleAddTagList} onKeyDown={handleKeyDown} />
       <div className='mt-[2.2rem] flex flex-wrap gap-[1rem] sm:mt-[1.5rem] sm:gap-[0.8rem]'>
         {tagList.length > 0 &&
           tagList.map((tag) => {

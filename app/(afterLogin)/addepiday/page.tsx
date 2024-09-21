@@ -4,13 +4,15 @@ import ContentTitle from '@/components/ContentTitle';
 import TextInput from '@/components/input/TextInput';
 import RadioButton from '@/components/RadioButton';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import TagContent from '@/components/tag/TagContent';
 import { useTagStore } from '@/store/tagStore';
-
-import { getSession, useSession } from 'next-auth/react';
+import { postAddEpiday } from '@/api/postEpiday';
+import { useSession } from 'next-auth/react';
+import Spinner from '@/components/Spinner';
+import { useRouter } from 'next/navigation';
 
 const addEpidaySchema = z
   .object({
@@ -52,6 +54,8 @@ const AddEpiday = () => {
 
   const { tagList } = useTagStore();
   const { data: session } = useSession();
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const content = useWatch({
     control,
@@ -67,7 +71,7 @@ const AddEpiday = () => {
 
   useEffect(() => {
     clearErrors('authorName');
-    console.log(session);
+
     if (author === 'self') {
       setValue('authorName', '홍길동'); // 저자 본인 선택했을 때 내 이름 가져오기
     } else if (author === 'unknown') {
@@ -77,10 +81,36 @@ const AddEpiday = () => {
     }
   }, [author, setValue]);
 
-  const onSubmit = async (data: AddEpidaySchema) => {};
+  const onSubmit = async (data: AddEpidaySchema) => {
+    // 요청 데이터에 tags 추가 / 출처URL 미입력 시 기본값 설정 / authorName값 author로 옮기기
+    const { authorName, referenceUrl, ...rest } = data;
+    const author = authorName ? authorName : data.author;
+
+    const epidayData = {
+      tags: tagList,
+      author,
+      referenceUrl: referenceUrl || 'http://www.naver.com',
+      ...rest,
+    };
+
+    try {
+      setLoading(true);
+      const result = await postAddEpiday(epidayData, session?.accessToken);
+
+      if (result) {
+        // 상세페이지 만들면 해당 에피데이 상세페이지로 이동하기로 바꿔야 됨 (writerId)
+        router.replace('/');
+      }
+    } catch (error) {
+      alert(error?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section className='w-[64rem] pb-[5.2rem] pt-[5.6rem] sm:px-[2.4rem] sm:pb-[3rem] sm:pt-[2.4rem]'>
+      {loading && <Spinner />}
       <h2 className='mb-[4rem] text-[2.4rem] font-[600] leading-[3.2rem] sm:text-[1.6rem] sm:leading-[2.6rem]'>에피데이 만들기</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-[5.4rem] sm:gap-[4rem]'>
@@ -122,7 +152,6 @@ const AddEpiday = () => {
         </div>
         <button
           className={`mt-[4rem] h-[6.4rem] w-[100%] rounded-[1.2rem] border-[0.1rem] border-var-blue-200 sm:mt-[2.4rem] sm:h-[4.8rem] ${isValid ? 'bg-var-black-500' : 'bg-var-blue-300'} text-[2rem] font-[600] text-[#FFF] sm:text-[1.6rem] sm:leading-[2.6rem]`}
-          disabled={!isValid}
         >
           작성 완료
         </button>
