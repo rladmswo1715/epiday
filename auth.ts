@@ -4,6 +4,7 @@ import Kakao from 'next-auth/providers/kakao';
 import BASE_URL from '@/constant/url';
 import { jwtDecode } from 'jwt-decode';
 import { JWT } from '@auth/core/jwt';
+import { getMyInfo } from './api/user';
 
 export const {
   handlers: { GET, POST },
@@ -57,7 +58,6 @@ export const {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.nickname = user.name;
         token.email = user.email;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -75,10 +75,12 @@ export const {
     async session({ session, token }) {
       if (token) {
         session.id = token.id as string;
-        session.nickname = token.nickname as string;
         session.email = token.email as string;
         session.accessToken = token.accessToken as string;
         session.refreshToken = token.refreshToken as string;
+
+        const authResponse = await getMyInfo(session.accessToken);
+        session.nickname = authResponse.nickname;
       }
       return session;
     },
