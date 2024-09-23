@@ -2,6 +2,8 @@ import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import Kakao from 'next-auth/providers/kakao';
 import BASE_URL from '@/constant/url';
+import { jwtDecode } from 'jwt-decode';
+import { JWT } from '@auth/core/jwt';
 
 export const {
   handlers: { GET, POST },
@@ -59,8 +61,16 @@ export const {
         token.email = user.email;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
+
+        const decodedAccessToken: { exp: number } = jwtDecode(user.accessToken);
+        token.accessTokenExpires = decodedAccessToken.exp * 1000;
       }
-      return token;
+
+      if (typeof token.accessTokenExpires === 'number' && Date.now() < token.accessTokenExpires) {
+        return token;
+      }
+
+      return refreshAccessToken(token);
     },
     async session({ session, token }) {
       if (token) {
@@ -83,3 +93,33 @@ export const {
     debug: () => {},
   },
 });
+
+async function refreshAccessToken(token: JWT) {
+  try {
+    const response = await fetch(`${BASE_URL}/auth/refresh-token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        refreshToken: token.refreshToken,
+      }),
+    });
+
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) {
+      throw refreshedTokens;
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.accessToken,
+      refreshToken: refreshedTokens.refreshToken || token.refreshToken,
+    };
+  } catch (error) {
+    console.error('리프레시 토큰 Error ::', error);
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+  }
+}
