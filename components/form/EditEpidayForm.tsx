@@ -23,6 +23,7 @@ const EditEpidayForm = ({ epidayId }: { epidayId: number }) => {
 
       if (result) {
         const tagNames = result.tags.map((tag: { id: number; name: string }) => tag.name);
+        const referenceUrl = result.referenceUrl === 'http://null' ? '' : result.referenceUrl;
 
         let author = result.author;
         if (result.author === '알 수 없음') {
@@ -35,6 +36,7 @@ const EditEpidayForm = ({ epidayId }: { epidayId: number }) => {
           ...result,
           tags: tagNames,
           author: author,
+          referenceUrl: referenceUrl,
         });
       }
     } catch (error) {

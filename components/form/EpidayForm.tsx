@@ -57,7 +57,7 @@ const EpidayForm = ({ epidayId, initialData, isEdit = false }: EpidayFormProps) 
     clearErrors('authorName');
 
     if (author === 'self') {
-      setValue('authorName', '홍길동'); // 저자 본인 선택했을 때 내 이름 가져오기
+      setValue('authorName', session.nickname); // 저자 본인 선택했을 때 내 이름 가져오기
     } else if (author === 'unknown') {
       setValue('authorName', '알 수 없음');
     } else {
@@ -94,7 +94,7 @@ const EpidayForm = ({ epidayId, initialData, isEdit = false }: EpidayFormProps) 
       ...rest,
       tags: tagList,
       author: author,
-      referenceUrl: referenceUrl || 'http://www.naver.com',
+      referenceUrl: referenceUrl || 'http://null',
     };
 
     try {
