@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Logo from '@/public/images/icon/logo.svg';
+import RQProvider from '@/components/provider/RQProvider';
 
 const AfterLoginLayOut = ({ children }) => {
   return (
@@ -12,7 +13,7 @@ const AfterLoginLayOut = ({ children }) => {
         </div>
         <span className='text-[1.4rem] font-[500] leading-[2.4rem] text-var-gray-300'>김코드</span>
       </header>
-      {children}
+      <RQProvider>{children}</RQProvider>
     </>
     // <div className='flex h-[100%] justify-center bg-var-blue-100 pt-[8rem]'>{children}</div>
   );
