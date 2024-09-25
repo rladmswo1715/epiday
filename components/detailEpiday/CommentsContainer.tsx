@@ -1,3 +1,4 @@
+import CommentGroup from '../comment/CommentGroup';
 import ProfileImage from '../ProfileImage';
 import VisibilityToggle from '../VisibilityToggle';
 
@@ -16,6 +17,7 @@ const CommentsContainer = () => {
         <VisibilityToggle />
         <button className='leadeing-[2.6rem] rounded-[0.8rem] border-[0.1rem] bg-var-black-500 px-[1.6rem] py-[0.9rem] text-[1.6rem] font-[600] text-var-blue-100'>저장</button>
       </div>
+      <CommentGroup />
     </section>
   );
 };
