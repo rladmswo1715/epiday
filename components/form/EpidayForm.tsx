@@ -108,8 +108,7 @@ const EpidayForm = ({ epidayId, initialData, isEdit = false }: EpidayFormProps) 
       }
 
       if (result && result !== '') {
-        // 상세페이지 만들면 해당 에피데이 상세페이지로 이동하기로 바꿔야 됨 (writerId)
-        router.replace('/');
+        router.replace(`/epidays/${epidayId}`);
       }
     } catch (error) {
       alert(error?.message);
