@@ -12,7 +12,7 @@ const DetailEpiday = ({ params }: EditEpidayPage) => {
     <div className='bg-var-blue-100'>
       <InnerLayout>
         <LikeContainer epidayId={epidayId} />
-        <CommentsContainer />
+        <CommentsContainer epidayId={epidayId} />
       </InnerLayout>
     </div>
   );
