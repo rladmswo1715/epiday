@@ -62,14 +62,24 @@ const LikeContainer = ({ epidayId }: { epidayId: number }) => {
     onError: (err, variables, context) => {
       queryClient.setQueryData(['epiday', epidayId], context.prevLikeStatus);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['epiday', epidayId] });
-    },
   });
 
   const handleLikeButtonClick = () => {
     const userAction = data?.isLiked ? 'UNLIKE_POST' : 'LIKE_POST';
     likeMutation.mutate(userAction);
+  };
+
+  const handleShareButtonClick = () => {
+    const url = window.location.href;
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        alert('URL이 복사되었습니다.');
+      })
+      .catch((err) => {
+        alert('URL 복사 실패');
+        console.error(err);
+      });
   };
 
   return (
@@ -92,11 +102,11 @@ const LikeContainer = ({ epidayId }: { epidayId: number }) => {
         <cite className='text-right font-iropke text-[2.4rem] leading-[4rem] text-var-blue-400'>{authorFilter(data?.author)}</cite>
       </div>
       <div className='mt-[3.6rem] flex justify-center gap-[1.6rem]'>
-        <button type='button' className='flex items-center rounded-[10rem] bg-var-black-600 px-[1.4rem] py-[0.6rem]' onClick={() => handleLikeButtonClick()}>
+        <button type='button' className={`flex items-center rounded-[10rem] ${data?.isLiked ? 'bg-var-blue-700' : 'bg-var-black-600'} px-[1.4rem] py-[0.6rem]`} onClick={() => handleLikeButtonClick()}>
           <Image src={like} alt='좋아요 버튼' />
           <span className='text-[2rem] font-[600] leading-[3.2rem] text-var-blue-100'>{data?.likeCount}</span>
         </button>
-        <button className='flex items-center rounded-[10rem] bg-var-line-100 px-[1.6rem] py-[0.6rem]'>
+        <button className='flex items-center rounded-[10rem] bg-var-line-100 px-[1.6rem] py-[0.6rem]' onClick={handleShareButtonClick}>
           <span className='text-[2rem] font-[500] leading-[3.2rem] text-var-gray-300'>공유하기</span>
           <Image src={share} alt='공유 버튼' />
         </button>
