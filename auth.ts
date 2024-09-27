@@ -81,6 +81,7 @@ export const {
 
         const authResponse = await getMyInfo(session.accessToken);
         session.nickname = authResponse.nickname;
+        session.image = authResponse.image;
       }
       return session;
     },

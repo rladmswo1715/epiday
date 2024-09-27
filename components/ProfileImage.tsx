@@ -3,12 +3,13 @@ import defaultProfile from '@/public/images/icon/default-user.svg';
 
 interface IProfileImageProps {
   size: string;
+  userSetting: string;
 }
 
-const ProfileImage = ({ size }: IProfileImageProps) => {
+const ProfileImage = ({ size, userSetting }: IProfileImageProps) => {
   return (
     <div className='relative overflow-hidden rounded-full' style={{ height: size, width: size }}>
-      <Image src={defaultProfile} alt='프로필 이미지' fill />
+      <Image src={userSetting ? userSetting : defaultProfile} alt='프로필 이미지' fill />
     </div>
   );
 };
