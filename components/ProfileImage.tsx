@@ -8,7 +8,7 @@ interface IProfileImageProps {
 
 const ProfileImage = ({ size, userSetting }: IProfileImageProps) => {
   return (
-    <div className='relative overflow-hidden rounded-full' style={{ height: size, width: size }}>
+    <div className='relative flex-shrink-0 overflow-hidden rounded-full' style={{ height: size, width: size }}>
       <Image src={userSetting ? userSetting : defaultProfile} alt='프로필 이미지' fill />
     </div>
   );

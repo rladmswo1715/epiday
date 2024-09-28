@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import CommentGroup from '../comment/CommentGroup';
 import ProfileImage from '../ProfileImage';
 import VisibilityToggle from '../VisibilityToggle';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getEpidayCommentsById, postAddComment } from '@/api/comments';
 import { useState } from 'react';
 import { addCommentSchema } from '@/schema/addCommentSchema';
@@ -22,8 +22,7 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
   const [content, setContent] = useState('');
   const [isVisible, setIsVisible] = useState(false);
 
-  const queryClient = useQueryClient();
-  const { data, isPending } = useQuery({
+  const { data, isPending, refetch } = useQuery({
     queryKey: ['epiday', 'comments', epidayId],
     queryFn: () => getEpidayCommentsById(epidayId, session?.accessToken),
     enabled: !!session?.accessToken,
@@ -31,6 +30,9 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
 
   const addCommentMutation = useMutation({
     mutationFn: (postCommentData: TPostCommentData) => postAddComment(postCommentData, session.accessToken),
+    onSuccess: () => {
+      refetch();
+    },
   });
 
   const handleAddComment = (e: React.FormEvent<HTMLFormElement>) => {
