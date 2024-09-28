@@ -1,4 +1,3 @@
-import ModalContainer from '@/components/modal/ModalContainer';
 import AuthSession from '@/components/provider/SessionProvider';
 import '@/styles/globals.css';
 
@@ -12,10 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='ko'>
       <body>
         {' '}
-        <AuthSession>
-          {children}
-          <ModalContainer />
-        </AuthSession>
+        <AuthSession>{children}</AuthSession>
       </body>
     </html>
   );
