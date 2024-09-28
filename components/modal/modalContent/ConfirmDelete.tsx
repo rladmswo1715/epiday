@@ -13,14 +13,14 @@ const ConfirmDelete = () => {
   const { data } = useSession();
   const queryClient = useQueryClient();
 
-  console.log(typeof modalProps.epidayId);
-
   const deleteCommentMutation = useMutation({
     mutationFn: async () => {
       await deleteComment(modalProps.commentId, data.accessToken);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', modalProps.epidayId] });
+      queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', String(modalProps.epidayId)] });
+    },
+    onSettled: () => {
       closeModal();
     },
   });
