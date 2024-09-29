@@ -4,11 +4,14 @@ import { useSession } from 'next-auth/react';
 import CommentGroup from '../comment/CommentGroup';
 import ProfileImage from '../ProfileImage';
 import VisibilityToggle from '../VisibilityToggle';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { getEpidayCommentsById, postAddComment } from '@/api/comments';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import Spinner from '../Spinner';
+import { ICommentsList } from '@/types/comments';
+import { useInView } from 'react-intersection-observer';
+import { throttle } from 'lodash';
 
 type TPostCommentData = {
   epigramId: number;
@@ -22,11 +25,31 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
   const [content, setContent] = useState('');
   const [isVisible, setIsVisible] = useState(false);
 
-  const { data, isPending, refetch } = useQuery({
-    queryKey: ['epiday', 'comments', epidayId],
-    queryFn: () => getEpidayCommentsById(epidayId, session?.accessToken),
+  // useInfiniteQuery 타입 : <response 데이터 타입, Object, InfiniteData타입, 쿼리 키 타입, pageParam 타입> 순서
+  const { data, isPending, isFetching, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery<ICommentsList, Object, InfiniteData<ICommentsList>, [_1: string, _2: string, _3: string], number>({
+    queryKey: ['epiday', 'comments', String(epidayId)],
+    queryFn: ({ pageParam }) => getEpidayCommentsById(epidayId, session?.accessToken, pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: !!session?.accessToken,
   });
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
+  const fetchNextPageThrottled = throttle(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, 1000);
+
+  useEffect(() => {
+    // view에 들어오고, 데이터를 가져오는 중이 아니고, 다음 페이지가 있을 때 fetchNextPage 진행
+    if (inView && hasNextPage) {
+      fetchNextPageThrottled();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
 
   const addCommentMutation = useMutation({
     mutationFn: (postCommentData: TPostCommentData) => postAddComment(postCommentData, session.accessToken),
@@ -51,7 +74,7 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
   return (
     <section className='pb-[22.8rem] pt-[4.8rem]'>
       {isPending && <Spinner />}
-      <h3 className='text-[2rem] font-[600] text-var-black-600'>댓글 ({data?.totalCount})</h3>
+      <h3 className='text-[2rem] font-[600] text-var-black-600'>댓글 ({data?.pages[0].totalCount})</h3>
       <form onSubmit={handleAddComment}>
         <div className='mt-[2.4rem] flex gap-[2.4rem]'>
           <ProfileImage size='50px' userSetting={session?.image} />
@@ -68,7 +91,8 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
           <button className='leadeing-[2.6rem] rounded-[0.8rem] border-[0.1rem] bg-var-black-500 px-[1.6rem] py-[0.9rem] text-[1.6rem] font-[600] text-var-blue-100'>저장</button>
         </div>
       </form>
-      <CommentGroup commentsData={data} />
+      <CommentGroup commentsData={data?.pages} />
+      <div ref={ref} className='h-[0.1rem]'></div>
     </section>
   );
 };

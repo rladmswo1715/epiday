@@ -8,9 +8,9 @@ type CommentData = {
 type PatchCommentData = CommentData & {
   commentId: number;
 };
-export const getEpidayCommentsById = async (id: number, accessToken: string, limit = 5) => {
+export const getEpidayCommentsById = async (id: number, accessToken: string, pageParam: number, limit = 2) => {
   try {
-    const response = await fetch(`${BASE_URL}/epigrams/${id}/comments?limit=${limit}`, {
+    const response = await fetch(`${BASE_URL}/epigrams/${id}/comments?limit=${limit}&cursor=${pageParam}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
     });

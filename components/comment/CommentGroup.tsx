@@ -1,9 +1,15 @@
 import Image from 'next/image';
 import CommentCard from './CommentCard';
 import noData from '@/public/images/icon/no-data.svg';
+import { IComment, ICommentsList } from '@/types/comments';
+import { Fragment } from 'react';
 
-const CommentGroup = ({ commentsData }) => {
-  if (commentsData?.totalCount === 0) {
+interface ICommentGroupProps {
+  commentsData: ICommentsList[];
+}
+
+const CommentGroup = ({ commentsData }: ICommentGroupProps) => {
+  if (!commentsData || commentsData.length === 0 || commentsData[0]?.totalCount === 0) {
     return (
       <div className='mt-[4rem] flex flex-col items-center gap-[2.4rem] px-[16rem] py-[12.8rem]'>
         <Image src={noData} alt='댓글 없음' width={144} height={144} />
@@ -19,11 +25,19 @@ const CommentGroup = ({ commentsData }) => {
   }
 
   return (
-    <div className='mt-[4rem]'>
-      {commentsData?.list.map((comment) => {
-        return <CommentCard cardData={comment} />;
-      })}
-    </div>
+    <>
+      <div className='mt-[4rem]'>
+        {commentsData.map((commentData) => {
+          return commentData?.list.map((comment) => {
+            return (
+              <Fragment key={comment.id}>
+                <CommentCard cardData={comment} />
+              </Fragment>
+            );
+          });
+        })}
+      </div>
+    </>
   );
 };
 
