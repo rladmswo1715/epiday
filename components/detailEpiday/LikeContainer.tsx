@@ -96,7 +96,7 @@ const LikeContainer = ({ epidayId }: { epidayId: number }) => {
               );
             })}
           </div>
-          <DropBoxGroup items={DropBoxitemList} data={epidayId} />
+          {String(data?.writerId) === session?.id && <DropBoxGroup items={DropBoxitemList} data={epidayId} />}
         </div>
         <p className='font-iropke text-[3.2rem] leading-[4.8rem] text-var-black-700'>{data?.content}</p>
         <cite className='text-right font-iropke text-[2.4rem] leading-[4rem] text-var-blue-400'>{authorFilter(data?.author)}</cite>

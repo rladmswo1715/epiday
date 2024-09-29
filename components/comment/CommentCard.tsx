@@ -65,27 +65,29 @@ const CommentCard = ({ cardData }) => {
             </button>
             <span>{timeAgo(cardData?.createdAt)}</span>
           </p>
-          <div className='flex gap-[1.6rem] text-[1.6rem] leading-[1.8rem] underline-offset-[0.2rem]'>
-            {isEditing ? (
-              <>
-                <button className='text-var-black-600 underline decoration-var-black-600' onClick={handleSaveClick}>
-                  저장
-                </button>
-                <button className='text-var-black-600 underline decoration-var-black-600' onClick={handleSaveCancelClick}>
-                  취소
-                </button>
-              </>
-            ) : (
-              <>
-                <button className='text-var-black-600 underline decoration-var-black-600' onClick={() => setIsEditing(true)}>
-                  수정
-                </button>
-                <button className='text-var-error underline decoration-var-error' onClick={() => openModal('confirmDelete', { commentId: cardData.id, epidayId: cardData.epigramId })}>
-                  삭제
-                </button>
-              </>
-            )}
-          </div>
+          {String(cardData?.writer.id) === session?.id && (
+            <div className='flex gap-[1.6rem] text-[1.6rem] leading-[1.8rem] underline-offset-[0.2rem]'>
+              {isEditing ? (
+                <>
+                  <button className='text-var-black-600 underline decoration-var-black-600' onClick={handleSaveClick}>
+                    저장
+                  </button>
+                  <button className='text-var-black-600 underline decoration-var-black-600' onClick={handleSaveCancelClick}>
+                    취소
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className='text-var-black-600 underline decoration-var-black-600' onClick={() => setIsEditing(true)}>
+                    수정
+                  </button>
+                  <button className='text-var-error underline decoration-var-error' onClick={() => openModal('confirmDelete', { commentId: cardData.id, epidayId: cardData.epigramId })}>
+                    삭제
+                  </button>
+                </>
+              )}
+            </div>
+          )}
         </div>
         {isEditing ? (
           <>
