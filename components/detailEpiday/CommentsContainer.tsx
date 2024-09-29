@@ -6,7 +6,7 @@ import ProfileImage from '../ProfileImage';
 import VisibilityToggle from '../VisibilityToggle';
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { getEpidayCommentsById, postAddComment } from '@/api/comments';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import Spinner from '../Spinner';
 import { ICommentsList } from '@/types/comments';
@@ -71,6 +71,10 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
     }
   };
 
+  const commentFlatMapList = useMemo(() => {
+    return data?.pages.flatMap((page) => page.list) || [];
+  }, [data]);
+
   return (
     <section className='pb-[22.8rem] pt-[4.8rem]'>
       {isPending && <Spinner />}
@@ -91,7 +95,7 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
           <button className='leadeing-[2.6rem] rounded-[0.8rem] border-[0.1rem] bg-var-black-500 px-[1.6rem] py-[0.9rem] text-[1.6rem] font-[600] text-var-blue-100'>저장</button>
         </div>
       </form>
-      <CommentGroup commentsData={data?.pages} />
+      <CommentGroup commentsData={commentFlatMapList} />
       <div ref={ref} className='h-[0.1rem]'></div>
     </section>
   );
