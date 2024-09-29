@@ -2,7 +2,7 @@ import { timeAgo } from '@/utils/formatDate';
 import ProfileImage from '../ProfileImage';
 import { useModalStore } from '@/store/modalStore';
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import VisibilityToggle from '../VisibilityToggle';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import { useSession } from 'next-auth/react';
@@ -20,26 +20,19 @@ const CommentCard = ({ cardData }) => {
   const [contentValue, setContentValue] = useState(cardData?.content);
   const [isVisible, setIsVisible] = useState(cardData?.isPrivate);
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   const updateCommentMutation = useMutation({
     mutationFn: async (patchCommentData: TPatchCommentData) => {
       await patchUpdateComment(patchCommentData, session.accessToken);
     },
     onSuccess: () => {
-      //queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', modalProps.epidayId] });
+      queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', String(cardData.epigramId)] });
     },
     onSettled: () => {
       setIsEditing(false);
     },
   });
-
-  const handleConfirmDelete = () => {
-    openModal('confirmDelete', { commentId: cardData.id, epidayId: cardData.epigramId });
-  };
-
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
 
   const handleSaveClick = async () => {
     addCommentSchema.parse(contentValue);
@@ -50,19 +43,26 @@ const CommentCard = ({ cardData }) => {
   const handleSaveCancelClick = () => {
     setIsEditing(false);
     setContentValue(cardData.content);
+    setIsVisible(cardData?.isPrivate);
   };
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContentValue(e.target.value);
   };
 
+  const handleOpenProfile = () => {
+    openModal('profile', { userNickname: session.nickname, userImage: session.image });
+  };
+
   return (
     <div className='flex gap-[1.6rem] border-t-[0.1rem] border-var-line-200 bg-var-background px-[2.4rem] py-[3.5rem]'>
-      <ProfileImage size='48px' userSetting={cardData?.writer.image} />
+      <ProfileImage size='48px' userSetting={cardData?.writer.image} onClick={handleOpenProfile} />
       <div className='w-[52.8rem]'>
         <div className='flex items-center justify-between'>
           <p className='space-x-[0.8rem] text-[1.6rem] leading-[2.6rem] text-var-black-300'>
-            <span>{cardData?.writer.nickname}</span>
+            <button type='button' onClick={handleOpenProfile}>
+              {cardData?.writer.nickname}
+            </button>
             <span>{timeAgo(cardData?.createdAt)}</span>
           </p>
           <div className='flex gap-[1.6rem] text-[1.6rem] leading-[1.8rem] underline-offset-[0.2rem]'>
@@ -77,10 +77,10 @@ const CommentCard = ({ cardData }) => {
               </>
             ) : (
               <>
-                <button className='text-var-black-600 underline decoration-var-black-600' onClick={handleEditClick}>
+                <button className='text-var-black-600 underline decoration-var-black-600' onClick={() => setIsEditing(true)}>
                   수정
                 </button>
-                <button className='text-var-error underline decoration-var-error' onClick={handleConfirmDelete}>
+                <button className='text-var-error underline decoration-var-error' onClick={() => openModal('confirmDelete', { commentId: cardData.id, epidayId: cardData.epigramId })}>
                   삭제
                 </button>
               </>

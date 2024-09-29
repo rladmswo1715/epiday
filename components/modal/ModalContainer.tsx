@@ -2,6 +2,7 @@
 
 import { useModalStore } from '@/store/modalStore';
 import ConfirmDelete from './modalContent/ConfirmDelete';
+import Profile from './modalContent/Profile';
 
 const ModalContainer = () => {
   const { modalType, isOpen } = useModalStore();
@@ -14,6 +15,8 @@ const ModalContainer = () => {
     switch (modalType) {
       case 'confirmDelete':
         return <ConfirmDelete />;
+      case 'profile':
+        return <Profile />;
       default:
         return null;
     }
