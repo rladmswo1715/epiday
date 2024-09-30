@@ -68,7 +68,22 @@ module.exports = {
         modalBackdrop: 990,
         modal: 991,
       },
+      quotes: {
+        none: 'none',
+      },
+      boxShadow: {
+        feed: '0px 3px 12px 0px rgba(0, 0, 0, 0.04)',
+      },
     },
   },
-  plugins: [require('tailwind-scrollbar-hide')],
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+    function ({ addUtilities }) {
+      addUtilities({
+        '.quotes-none': {
+          quotes: 'none',
+        },
+      });
+    },
+  ],
 };
