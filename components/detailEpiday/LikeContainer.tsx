@@ -10,23 +10,8 @@ import Spinner from '../Spinner';
 import { authorFilter } from '@/utils/commonFunction';
 import DropBoxGroup from '../DropBox/DropBoxGroup';
 import { deleteLike, postLike } from '@/api/like';
-import { MouseEventHandler } from 'react';
-
-interface IEpidayData {
-  likeCount: number;
-  tags: ITag;
-  writerId: number;
-  referenceUrl: string;
-  referenceTitle: string;
-  author: string;
-  content: string;
-  id: number;
-  isLiked: boolean;
-}
-interface ITag {
-  id: number;
-  name: string;
-}
+import Link from 'next/link';
+import { IEpidayData, ITag } from '@/types/epiday';
 
 const DropBoxitemList = ['수정하기', '삭제하기'];
 
@@ -98,9 +83,14 @@ const LikeContainer = ({ epidayId }: { epidayId: number }) => {
           </div>
           {String(data?.writerId) === session?.id && <DropBoxGroup items={DropBoxitemList} data={epidayId} />}
         </div>
-        <p className='font-iropke text-[3.2rem] leading-[4.8rem] text-var-black-700'>{data?.content}</p>
+        <q className='quotes-none font-iropke text-[3.2rem] leading-[4.8rem] text-var-black-700'>{data?.content}</q>
         <cite className='text-right font-iropke text-[2.4rem] leading-[4rem] text-var-blue-400'>{authorFilter(data?.author)}</cite>
       </div>
+      {data?.referenceTitle && (
+        <Link href={data?.referenceUrl} target='_blank' rel='noopener noreferrer' className='text-[1.5rem] text-var-blue-500'>
+          출처 - {data?.referenceTitle}
+        </Link>
+      )}
       <div className='mt-[3.6rem] flex justify-center gap-[1.6rem]'>
         <button type='button' className={`flex items-center rounded-[10rem] ${data?.isLiked ? 'bg-var-blue-700' : 'bg-var-black-600'} px-[1.4rem] py-[0.6rem]`} onClick={() => handleLikeButtonClick()}>
           <Image src={like} alt='좋아요 버튼' />
