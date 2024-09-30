@@ -20,3 +20,22 @@ export const getEpidayData = async (id: number, accessToken: string) => {
     throw error;
   }
 };
+
+export const getEpidayList = async (pageParam: number, limit = 6) => {
+  try {
+    const response = await fetch(`${BASE_URL}/epigrams/?limit=${limit}&cursor=${pageParam}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      throw { message: errorData.message || '에피데이 리스트 불러오기 실패', details: errorData.details };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
