@@ -11,12 +11,12 @@ const EpidayCard = ({ epidayData }: IEpidayCardProps) => {
     <div>
       <Link
         href={`/epidays/${epidayData.id}`}
-        className='shadow-feed flex flex-col justify-between overflow-hidden rounded-[1.6rem] border-[0.1rem] border-var-line-100 bg-var-blue-100 hover:shadow-lg'
+        className='flex flex-col justify-between overflow-hidden rounded-[1.6rem] border-[0.1rem] border-var-line-100 bg-var-blue-100 shadow-feed hover:shadow-lg'
         style={{
           backgroundImage: 'repeating-linear-gradient(white, white 21px, #F2F2F2 24px)',
         }}
       >
-        <q className='quotes-none h-[18rem] px-[2.4rem] pt-[2.4rem] font-iropke text-[2.4rem] leading-[4rem] text-var-black-600'>{epidayData.content}</q>
+        <q className='h-[18rem] break-words px-[2.4rem] pt-[2.4rem] font-iropke text-[2.4rem] leading-[4rem] text-var-black-600 quotes-none'>{epidayData.content}</q>
         <div className='bg-white px-[2.4rem] pb-[2.4rem] text-right'>
           <cite className='font-iropke text-[2.4rem] leading-[4rem] text-var-blue-400'>{authorFilter(epidayData.author)}</cite>
         </div>
