@@ -13,7 +13,9 @@ const AfterLoginLayOut = ({ children }) => {
           <Link href='/feed' className='pr-[2.4rem] text-[1.6rem] font-[600] leading-[2.6rem]'>
             피드
           </Link>
-          <button className='text-[1.6rem] font-[600] leading-[2.6rem]'>검색</button>
+          <Link href='/search' className='text-[1.6rem] font-[600] leading-[2.6rem]'>
+            검색
+          </Link>
         </div>
         <span className='text-[1.4rem] font-[500] leading-[2.4rem] text-var-gray-300'>김코드</span>
       </header>
