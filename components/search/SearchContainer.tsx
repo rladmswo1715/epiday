@@ -8,11 +8,20 @@ import SearchResults from './SearchResults';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { IEpidayList } from '@/types/epiday';
 import { getEpidayList } from '@/api/getEpiday';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-const SearchContainer = ({ keyword }) => {
-  const [searchText, setSearchText] = useState(keyword);
+const SearchContainer = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [searchText, setSearchText] = useState(searchParams.get('keyword') || '');
+  const [recentSearchList, setRecentSearchList] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      return JSON.parse(localStorage.getItem('recentSearches') || '[]');
+    }
+    return [];
+  });
 
-  const { data, isPending, isFetching, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery<IEpidayList, Object, InfiniteData<IEpidayList>, [_1: string, _2: string], number>({
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery<IEpidayList, Object, InfiniteData<IEpidayList>, [_1: string, _2: string], number>({
     queryKey: ['epiday', 'search'],
     queryFn: async ({ pageParam }) => await getEpidayList(pageParam, searchText),
     initialPageParam: 0,
@@ -21,25 +30,61 @@ const SearchContainer = ({ keyword }) => {
   });
 
   useEffect(() => {
-    if (searchText) refetch();
+    const keyword = searchParams.get('keyword');
+    if (keyword) {
+      setSearchText(keyword);
+      refetch();
+    }
   }, []);
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
 
+  const saveRecentSearch = (keyword: string) => {
+    const searchList = [keyword, ...recentSearchList.filter((search) => search !== keyword)];
+    const sliceSearchList = searchList.slice(0, 5);
+    setRecentSearchList(sliceSearchList);
+    localStorage.setItem('recentSearchList', JSON.stringify(sliceSearchList));
+  };
+
+  const handleClickRecentText = (e: React.MouseEvent<HTMLButtonElement>, recentText: string) => {
+    e.preventDefault();
+    const newParams = new URLSearchParams(window.location.search);
+    newParams.set('keyword', recentText);
+
+    if (recentText && recentText !== '') {
+      localStorage.setItem('recentSearchList', recentText);
+      saveRecentSearch(recentText);
+    }
+    router.push(`?${newParams.toString()}`);
+
+    setSearchText(recentText);
+    // refetch가 다음 동작에 작동해서 비동기로
+    setTimeout(() => {
+      refetch();
+    }, 0);
+  };
+
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const newParams = new URLSearchParams(window.location.search);
+    newParams.set('keyword', searchText);
+
+    if (searchText && searchText !== '') {
+      localStorage.setItem('recentSearchList', searchText);
+      saveRecentSearch(searchText);
+    }
+    router.push(`?${newParams.toString()}`);
     refetch();
   };
-  console.log(data);
 
-  if (!data && isFetching) return <Spinner />;
+  if (!data && isLoading) return <Spinner />;
 
   return (
     <section className='mt-[2.4rem] pb-[15rem]'>
       <SearchForm value={searchText} onChange={handleChangeText} onSubmit={handleSearch} />
-      <RecentSearches />
+      <RecentSearches searchList={recentSearchList} onTextClick={handleClickRecentText} />
       <SearchResults searchResult={data?.pages} />
     </section>
   );
