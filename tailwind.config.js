@@ -52,6 +52,7 @@ module.exports = {
         'var-illust-sub-gray-1': '#C7D1E0',
         'var-illust-sub-gray-2': '#E3E9F1',
         'var-illust-sub-gray-3': '#EFF3F8',
+        'var-background-emotion': 'rgba(175, 186, 205, 0.15)',
       },
       fontFamily: {
         pretendard: ['Pretendard', 'sans-serif'],
