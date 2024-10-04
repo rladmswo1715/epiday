@@ -101,7 +101,7 @@ const SearchContainer = () => {
     <section className='mt-[2.4rem] pb-[15rem]'>
       <SearchForm value={searchText} onChange={handleChangeText} onSubmit={handleSearch} />
       <RecentSearches searchList={recentSearchList} onTextClick={handleClickRecentText} setRecentSearchList={setRecentSearchList} />
-      <SearchResults searchResult={data?.pages} />
+      <SearchResults searchResult={data?.pages} searchText={searchText} />
       <div ref={ref} className='h-[0.1rem]'></div>
     </section>
   );
