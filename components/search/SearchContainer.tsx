@@ -9,6 +9,8 @@ import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { IEpidayList } from '@/types/epiday';
 import { getEpidayList } from '@/api/getEpiday';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useInView } from 'react-intersection-observer';
+import { throttle } from 'lodash';
 
 const SearchContainer = () => {
   const router = useRouter();
@@ -29,13 +31,27 @@ const SearchContainer = () => {
     enabled: false,
   });
 
+  const { ref, inView } = useInView({
+    threshold: 0,
+  });
+
   useEffect(() => {
     const keyword = searchParams.get('keyword');
-    if (keyword) {
-      setSearchText(keyword);
-      refetch();
-    }
+    setSearchText(keyword);
+    refetch();
   }, []);
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPageThrottled();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  const fetchNextPageThrottled = throttle(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, 1000);
 
   const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -84,8 +100,9 @@ const SearchContainer = () => {
   return (
     <section className='mt-[2.4rem] pb-[15rem]'>
       <SearchForm value={searchText} onChange={handleChangeText} onSubmit={handleSearch} />
-      <RecentSearches searchList={recentSearchList} onTextClick={handleClickRecentText} />
+      <RecentSearches searchList={recentSearchList} onTextClick={handleClickRecentText} setRecentSearchList={setRecentSearchList} />
       <SearchResults searchResult={data?.pages} />
+      <div ref={ref} className='h-[0.1rem]'></div>
     </section>
   );
 };
