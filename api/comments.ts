@@ -100,3 +100,22 @@ export const deleteComment = async (id: number, accessToken: string) => {
     console.error(error);
   }
 };
+
+export const getCommentList = async (limit: number = 4) => {
+  try {
+    const response = await fetch(`${BASE_URL}/comments?limit=${limit}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      throw { message: errorData.message || '댓글 리스트 불러오기 실패', details: errorData.details };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
