@@ -1,13 +1,33 @@
+import { useEmotionStore } from '@/store/emotionStore';
 import EmotionItem from './EmotionItem';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import EMOTION_OPTIONS from '@/constant/emotion';
 
 const EmotionGroup = () => {
+  const { getEmotion, selectedEmotion } = useEmotionStore();
+  const { data: session } = useSession();
+  const [todayEmotion, setTodayEmotion] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!session) return;
+
+    handleGetTodayEmotion();
+  }, [selectedEmotion, session]);
+
+  const handleGetTodayEmotion = async () => {
+    const result = await getEmotion(session?.id);
+
+    if (result) {
+      setTodayEmotion(result.emotion);
+    }
+  };
+
   return (
     <div className='mx-auto flex gap-[1.6rem]'>
-      <EmotionItem src='/images/icon/emotion-moved.svg' alt='감동' emotionText='감동' />
-      <EmotionItem src='/images/icon/emotion-happy.svg' alt='기쁨' emotionText='기쁨' />
-      <EmotionItem src='/images/icon/emotion-worried.svg' alt='고민' emotionText='고민' />
-      <EmotionItem src='/images/icon/emotion-sad.svg' alt='슬픔' emotionText='슬픔' />
-      <EmotionItem src='/images/icon/emotion-angry.svg' alt='분노' emotionText='분노' />
+      {EMOTION_OPTIONS.map((item) => {
+        return <EmotionItem key={item.id} src={item.src} emotionText={item.emotionText} value={item.value} isSelected={todayEmotion === item.value} />;
+      })}
     </div>
   );
 };
