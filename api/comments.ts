@@ -101,9 +101,9 @@ export const deleteComment = async (id: number, accessToken: string) => {
   }
 };
 
-export const getCommentList = async (limit: number = 4) => {
+export const getCommentList = async (cursor: number, limit: number = 4) => {
   try {
-    const response = await fetch(`${BASE_URL}/comments?limit=${limit}`, {
+    const response = await fetch(`${BASE_URL}/comments?limit=${limit}&cursor=${cursor}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });

@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
+import Link from 'next/link';
 
 const RecentEpidaysContainer = () => {
   const { data } = useQuery({
@@ -24,10 +25,12 @@ const RecentEpidaysContainer = () => {
         })}
       </div>
       {data && data.totalCount > 3 && (
-        <button type='button' className='mx-auto mt-[7.2rem] flex items-center gap-[0.8rem] rounded-[10rem] border-[0.1rem] border-var-line-200 px-[4rem] py-[1.2rem]'>
-          <Image src={plus} alt='더보기' width={24} height={24} />
-          <span className='text-[2rem] font-[500] text-var-blue-500'>에피그램 더보기</span>
-        </button>
+        <Link href='/feed'>
+          <div className='mx-auto mt-[7.2rem] flex w-fit items-center gap-[0.8rem] rounded-[10rem] border-[0.1rem] border-var-line-200 px-[4rem] py-[1.2rem]'>
+            <Image src={plus} alt='더보기' width={24} height={24} />
+            <span className='text-[2rem] font-[500] text-var-blue-500'>에피그램 더보기</span>
+          </div>
+        </Link>
       )}
     </div>
   );

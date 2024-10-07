@@ -25,7 +25,7 @@ const EmotionItem = ({ src, emotionText, value, isSelected }: IEmotionItemProps)
 
   return (
     <button type='button' className='flex flex-col items-center gap-[0.8rem]' value={value} onClick={handleClickEmotion}>
-      <div className={classNames('rounded-[1.6rem] bg-var-background-emotion p-[1.6rem]', { 'border-4 border-yellow-400': isSelected })}>
+      <div className={classNames('rounded-[1.6rem] bg-var-background-emotion p-[1.6rem]', { 'border-4 border-var-illust-yellow': isSelected })}>
         <Image src={src} alt={emotionText} width={48} height={48} />
       </div>
       <span className='text-[2rem] font-[600] text-var-blue-400'>{emotionText}</span>
