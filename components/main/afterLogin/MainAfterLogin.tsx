@@ -9,7 +9,7 @@ const MainAfterLogin = () => {
   return (
     <section className='flex flex-col gap-[14rem] py-[12rem]'>
       <TodayEpidayContainer />
-      <EmotionContainer />
+      <EmotionContainer pageType='main' />
       <RecentEpidaysContainer />
       <RecentCommentsContainer />
     </section>
