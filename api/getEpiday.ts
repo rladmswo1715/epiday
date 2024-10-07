@@ -42,3 +42,24 @@ export const getEpidayList = async (pageParam: number, searchText = '', limit = 
     throw error;
   }
 };
+
+export const getTodayEpiday = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/epigrams/today`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    console.log('response ::', response);
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      if (errorData.message === 'jwt expired') throw { message: '토큰 유효기간 만료' };
+      throw { message: errorData.message || '에피데이 불러오기 실패', details: errorData.details };
+    }
+
+    return response;
+  } catch (error) {
+    console.error('오늘의 에피그램 API ERROR: ', error);
+    throw error;
+  }
+};
