@@ -12,7 +12,7 @@ const ProfileImage = ({ size, userSetting, onClick }: IProfileImageProps) => {
 
   return (
     <button
-      className={`relative flex-shrink-0 overflow-hidden rounded-full ${isClickable ?? 'pointer-events-none cursor-default'}`}
+      className={`relative flex-shrink-0 overflow-hidden rounded-full border-[0.2rem] border-var-blue-300 ${isClickable ?? 'pointer-events-none cursor-default'}`}
       style={{ height: size, width: size }}
       onClick={isClickable ? onClick : undefined}
       disabled={isClickable ? false : true}
