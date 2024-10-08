@@ -98,7 +98,7 @@ const SearchContainer = () => {
   if (!data && isLoading) return <Spinner />;
 
   return (
-    <section className='mt-[2.4rem] pb-[15rem]'>
+    <section className='pb-[15rem] pt-[2.4rem]'>
       <SearchForm value={searchText} onChange={handleChangeText} onSubmit={handleSearch} />
       <RecentSearches searchList={recentSearchList} onTextClick={handleClickRecentText} setRecentSearchList={setRecentSearchList} />
       <SearchResults searchResult={data?.pages} searchText={searchText} />
