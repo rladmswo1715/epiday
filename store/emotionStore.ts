@@ -15,7 +15,7 @@ interface IEmotionStore {
   selectedEmotion: TEmotion;
   setSelectedEmotion: (emotion: TEmotion) => void;
   postEmotion: (accessToken: string) => Promise<void>;
-  getEmotion: (userId: string) => Promise<TResponseEmotion>;
+  getEmotion: (userId: string) => Promise<Response>;
 }
 
 export const useEmotionStore = create<IEmotionStore>((set) => ({
@@ -38,9 +38,9 @@ export const useEmotionStore = create<IEmotionStore>((set) => ({
       if (!userId) return;
 
       const result = await getTodayEmotion(userId);
-      if (result) {
-        return result;
-      }
+      if (result.status === 204) return undefined;
+
+      return result;
     } catch (error) {
       alert(error.message);
     }

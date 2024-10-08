@@ -19,7 +19,8 @@ const EmotionGroup = () => {
     const result = await getEmotion(session?.id);
 
     if (result) {
-      setTodayEmotion(result.emotion);
+      const data = await result.json();
+      setTodayEmotion(data?.emotion);
     }
   };
 

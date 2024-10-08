@@ -38,7 +38,7 @@ export const getTodayEmotion = async (userId: string) => {
       throw { message: errorData.message || '감정 불러오기 실패', details: errorData.details };
     }
 
-    return await response.json();
+    return  response;
   } catch (error) {
     console.error(error);
     throw error;
