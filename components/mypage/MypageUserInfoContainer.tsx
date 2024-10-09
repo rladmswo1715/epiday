@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react';
-import InnerLayout from '../InnerLayout';
+
 import ProfileImage from '../ProfileImage';
 
 const MypageUserInfoContainer = () => {

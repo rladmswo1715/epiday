@@ -1,13 +1,12 @@
-import InnerLayout from '../InnerLayout';
 import EmotionContainer from '../main/afterLogin/EmotionContainer';
 import EmotionCalendar from './EmotionCalendar';
 
 const MypageEmotionContainer = () => {
   return (
-    <InnerLayout cssStyle='flex flex-col gap-[16.4rem]'>
+    <div className='mt-[9.6rem] flex flex-col gap-[16.4rem]'>
       <EmotionContainer pageType='mypage' />
       <EmotionCalendar />
-    </InnerLayout>
+    </div>
   );
 };
 

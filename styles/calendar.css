@@ -1,0 +1,104 @@
+.react-calendar {
+  width: 100%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom .react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 22px;
+}
+
+.custom
+  .react-calendar__navigation
+  .react-calendar__navigation__label {
+  order: 1;
+  flex-grow: 1;
+  text-align: left;
+  pointer-events: none; 
+}
+
+.custom .react-calendar__navigation button {
+  order: 2; 
+  background-color: transparent;
+  border: none;
+}
+
+.custom .react-calendar__navigation__label__labelText {
+  color: #373737;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px; 
+}
+
+.custom .react-calendar__navigation__next-button {
+  margin-left: 24px;
+}
+
+.react-calendar__tile {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border-bottom: 1px solid #eceff4;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr{
+  text-decoration: none;
+}
+
+.react-calendar__month-view__weekdays__weekday,
+.react-calendar__tile abbr {
+  width: 91px;
+  height: 91px;
+  font-size: 24px;
+  color: #c4c4c4;
+  font-weight: 600;
+  line-height: 32px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-calendar__month-view__weekdays {
+  border-top: 1px solid #eceff4;
+  border-bottom: 1px solid #eceff4;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  text-align: center;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--active {
+  box-shadow: 0 0 0 4px #e46e80 inset;
+  border-radius: 3px;
+  color: #e46e80;
+}
+
+.react-calendar__tile--now {
+  box-shadow: 0 0 0 4px #e46e80 inset ;
+  border-radius: 3px;
+}
+
+.react-calendar__tile--now abbr {
+  color: #e46e80;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  box-shadow: 0 0 0 3px #e46e80 inset;
+}
+
+.react-calendar__tile.emotion-day abbr {
+  font-size: 8px;
+  line-height: 16px;
+}
+
