@@ -38,7 +38,28 @@ export const getTodayEmotion = async (userId: string) => {
       throw { message: errorData.message || '감정 불러오기 실패', details: errorData.details };
     }
 
-    return  response;
+    return response;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getMonthlyEmotion = async (userId: string) => {
+  try {
+    console.log('userId ::', userId);
+    const response = await fetch(`${BASE_URL}/emotionLogs/monthly?userId=${userId}&year=2024&month=10`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      throw { message: errorData.message || '감정리스트 불러오기 실패', details: errorData.details };
+    }
+
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error(error);
     throw error;
