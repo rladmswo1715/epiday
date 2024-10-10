@@ -61,7 +61,7 @@ const EmotionCalendar = () => {
   const handleMonthChange = ({ activeStartDate }) => setDate(activeStartDate);
 
   return (
-    <div className='pb-[20rem]'>
+    <div>
       <Calendar
         locale='ko'
         className='custom'
