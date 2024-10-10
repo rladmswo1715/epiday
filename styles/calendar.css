@@ -10,7 +10,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0;
-  margin-bottom: 22px;
+  margin-bottom: 48px;
 }
 
 .custom
@@ -75,13 +75,11 @@
   text-align: center;
 }
 
-.react-calendar__tile:enabled:hover,
-.react-calendar__tile:enabled:focus,
-.react-calendar__tile--active {
-  box-shadow: 0 0 0 4px #e46e80 inset;
-  border-radius: 3px;
-  color: #e46e80;
+.react-calendar__tile,
+.react-calendar__tile{
+  cursor: default;
 }
+
 
 .react-calendar__tile--now {
   box-shadow: 0 0 0 4px #e46e80 inset ;
@@ -90,11 +88,6 @@
 
 .react-calendar__tile--now abbr {
   color: #e46e80;
-}
-
-.react-calendar__tile--now:enabled:hover,
-.react-calendar__tile--now:enabled:focus {
-  box-shadow: 0 0 0 3px #e46e80 inset;
 }
 
 .react-calendar__tile.emotion-day {

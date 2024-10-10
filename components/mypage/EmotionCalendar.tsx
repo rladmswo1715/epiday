@@ -3,11 +3,11 @@ import '@/styles/calendar.css';
 import Image from 'next/image';
 import prevArrow from '@/public/images/icon/arrow-left.svg';
 import nextArrow from '@/public/images/icon/arrow-right.svg';
-import { format } from 'date-fns';
+import { format, startOfMonth } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import { getMonthlyEmotion } from '@/api/emotion';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import emotionMoved from '@/public/images/icon/emotion-moved.svg';
 import emotionAngry from '@/public/images/icon/emotion-angry.svg';
 import emotionHappy from '@/public/images/icon/emotion-happy.svg';
@@ -24,10 +24,15 @@ const emotionsSrc = {
 
 const EmotionCalendar = () => {
   const { data: session } = useSession();
+  const [date, setDate] = useState(new Date());
+
+  const monthStart = startOfMonth(date);
+  const year = format(monthStart, 'yyyy');
+  const month = format(monthStart, 'M');
 
   const { data, refetch } = useQuery({
     queryKey: ['mypage', 'emotions'],
-    queryFn: () => getMonthlyEmotion(session?.id),
+    queryFn: () => getMonthlyEmotion(session?.id, year, month),
     enabled: !!session,
   });
 
@@ -40,18 +45,20 @@ const EmotionCalendar = () => {
   const selectedEmotion = {};
   if (data) {
     data.forEach((item) => {
-      const dateKey = format(item?.createdAt, 'yyyy-mm-dd');
+      const dateKey = format(item?.createdAt, 'yyyy-MM-dd');
       selectedEmotion[dateKey] = item.emotion;
     });
   } else return;
 
   const calendarTileClassName: CalendarProps['tileClassName'] = ({ date, view }) => {
-    return view === 'month' && selectedEmotion[format(date, 'yyyy-mm-dd')] ? 'emotion-day' : null;
+    return view === 'month' && selectedEmotion[format(date, 'yyyy-MM-dd')] ? 'emotion-day' : null;
   };
 
   const calendarTileContent: CalendarProps['tileContent'] = ({ date, view }) => {
-    return view === 'month' && selectedEmotion[format(date, 'yyyy-mm-dd')] ? <Image src={emotionsSrc[selectedEmotion[format(date, 'yyyy-mm-dd')]]} alt='감정' width={36} height={36} /> : null;
+    return view === 'month' && selectedEmotion[format(date, 'yyyy-MM-dd')] ? <Image src={emotionsSrc[selectedEmotion[format(date, 'yyyy-MM-dd')]]} alt='감정' width={36} height={36} /> : null;
   };
+
+  const handleMonthChange = ({ activeStartDate }) => setDate(activeStartDate);
 
   return (
     <div className='pb-[20rem]'>
@@ -66,6 +73,8 @@ const EmotionCalendar = () => {
         calendarType='hebrew'
         tileClassName={calendarTileClassName}
         tileContent={calendarTileContent}
+        onActiveStartDateChange={handleMonthChange}
+        onClickDay={null}
       />
     </div>
   );

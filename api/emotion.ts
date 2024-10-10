@@ -45,10 +45,9 @@ export const getTodayEmotion = async (userId: string) => {
   }
 };
 
-export const getMonthlyEmotion = async (userId: string) => {
+export const getMonthlyEmotion = async (userId: string, year: string, month: string) => {
   try {
-    console.log('userId ::', userId);
-    const response = await fetch(`${BASE_URL}/emotionLogs/monthly?userId=${userId}&year=2024&month=10`, {
+    const response = await fetch(`${BASE_URL}/emotionLogs/monthly?userId=${userId}&year=${year}&month=${month}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
