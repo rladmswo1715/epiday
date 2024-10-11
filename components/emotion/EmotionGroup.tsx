@@ -2,7 +2,7 @@ import { useEmotionStore } from '@/store/emotionStore';
 import EmotionItem from './EmotionItem';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import EMOTION_OPTIONS from '@/constant/emotion';
+import { EMOTION_OPTIONS } from '@/constant/emotion';
 
 const EmotionGroup = () => {
   const { getEmotion, selectedEmotion } = useEmotionStore();
