@@ -13,6 +13,7 @@ import emotionAngry from '@/public/images/icon/emotion-angry.svg';
 import emotionHappy from '@/public/images/icon/emotion-happy.svg';
 import emotionSad from '@/public/images/icon/emotion-sad.svg';
 import emotionWorried from '@/public/images/icon/emotion-worried.svg';
+import EmotionChart from './EmotionChart';
 
 const emotionsSrc = {
   MOVED: emotionMoved.src,
@@ -61,22 +62,25 @@ const EmotionCalendar = () => {
   const handleMonthChange = ({ activeStartDate }) => setDate(activeStartDate);
 
   return (
-    <div>
-      <Calendar
-        locale='ko'
-        className='custom'
-        prevLabel={<Image src={prevArrow} alt='이전 달' width={36} height={36} />}
-        nextLabel={<Image src={nextArrow} alt='다음 달' width={36} height={36} />}
-        prev2Label={null}
-        next2Label={null}
-        formatDay={(locale, date) => format(date, 'd')}
-        calendarType='hebrew'
-        tileClassName={calendarTileClassName}
-        tileContent={calendarTileContent}
-        onActiveStartDateChange={handleMonthChange}
-        onClickDay={null}
-      />
-    </div>
+    <>
+      <div>
+        <Calendar
+          locale='ko'
+          className='custom'
+          prevLabel={<Image src={prevArrow} alt='이전 달' width={36} height={36} />}
+          nextLabel={<Image src={nextArrow} alt='다음 달' width={36} height={36} />}
+          prev2Label={null}
+          next2Label={null}
+          formatDay={(locale, date) => format(date, 'd')}
+          calendarType='hebrew'
+          tileClassName={calendarTileClassName}
+          tileContent={calendarTileContent}
+          onActiveStartDateChange={handleMonthChange}
+          onClickDay={null}
+        />
+      </div>
+      <EmotionChart initialData={data} />
+    </>
   );
 };
 
