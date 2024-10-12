@@ -44,7 +44,7 @@ const EmotionChart = ({ initialData }) => {
       setHasEmotion(true);
       const percentages = EMOTIONS.reduce(
         (acc, item) => {
-          acc[item] = (updatedEmotionRatio[item] / emotionCount) * 100;
+          acc[item] = Math.round((updatedEmotionRatio[item] / emotionCount) * 100);
           return acc;
         },
         {} as Record<TEmotions, number>,
