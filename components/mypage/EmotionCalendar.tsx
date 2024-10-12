@@ -41,7 +41,7 @@ const EmotionCalendar = () => {
     if (!session) return;
 
     refetch();
-  }, [session]);
+  }, [session, year, month]);
 
   const selectedEmotion = {};
   if (data) {

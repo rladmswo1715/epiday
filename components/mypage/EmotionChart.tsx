@@ -20,8 +20,18 @@ const EmotionChart = ({ initialData }) => {
   const [highRatioEmotion, setHighRatioEmotion] = useState<TEmotions | null>(null);
 
   useEffect(() => {
+    const resetEmotionRatio = EMOTIONS.reduce(
+      (acc, item) => {
+        acc[item] = 0;
+        return acc;
+      },
+      {} as Record<TEmotions, number>,
+    );
+
+    setEmotionRatio(resetEmotionRatio);
+
     //얕은 복사
-    const updatedEmotionRatio = { ...emotionRatio };
+    const updatedEmotionRatio = { ...resetEmotionRatio };
     let emotionCount = 0;
 
     initialData.forEach((dataItem) => {
@@ -46,6 +56,9 @@ const EmotionChart = ({ initialData }) => {
       });
 
       setHighRatioEmotion(highestEmotion as TEmotions);
+    } else {
+      setHasEmotion(false);
+      setEmotionPercentages({} as Record<TEmotions, number>);
     }
   }, [initialData]);
 
@@ -81,7 +94,7 @@ const EmotionChart = ({ initialData }) => {
             {hasEmotion && (
               <>
                 <div className='relative h-[4rem] w-[4rem]'>
-                  <Image src={EMOTION_IMAGE_SRC[highRatioEmotion]} alt='감정' layout='fill' />
+                  <Image src={EMOTION_IMAGE_SRC[highRatioEmotion]} alt='감정' fill />
                 </div>
                 <span className='text-[1.6rem] font-[700] leading-normal text-var-black-600'>
                   {
@@ -97,10 +110,10 @@ const EmotionChart = ({ initialData }) => {
         <div className='flex flex-col gap-[1.4rem]'>
           {EMOTION_OPTIONS.map((item) => {
             return (
-              <div className='flex items-center gap-[1.6rem]'>
+              <div key={item.id} className='flex items-center gap-[1.6rem]'>
                 <div className='h-[1.6rem] w-[1.6rem] rounded-[0.2rem]' style={{ backgroundColor: item.backgroundColor }} />
                 <Image src={item.src} alt={item.value} width={24} height={24} />
-                <span className='text-[2rem] font-[600] text-var-black-600'>{emotionPercentages[item.value]}%</span>
+                <span className='text-[2rem] font-[600] text-var-black-600'>{emotionPercentages[item.value] ? emotionPercentages[item.value] : 0}%</span>
               </div>
             );
           })}
