@@ -2,6 +2,7 @@
 
 import InnerLayout from '../InnerLayout';
 import MypageEmotionContainer from './MypageEmotionContainer';
+import MypageMyActivity from './MypageMyActivity';
 import MypageUserInfoContainer from './MypageUserInfoContainer';
 
 const MypageContent = () => {
@@ -13,6 +14,9 @@ const MypageContent = () => {
           <MypageEmotionContainer />
         </InnerLayout>
       </div>
+      <InnerLayout>
+        <MypageMyActivity />
+      </InnerLayout>
     </div>
   );
 };
