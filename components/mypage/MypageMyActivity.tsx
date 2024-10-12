@@ -19,7 +19,7 @@ const MypageMyActivity = () => {
         <MyActivityRadioInput activityType='epiday' selectedActivity={selectedActivity} setSelectedActivity={setSelectedActivity} />
         <MyActivityRadioInput activityType='comment' selectedActivity={selectedActivity} setSelectedActivity={setSelectedActivity} />
       </div>
-      {selectedActivity === 'epiday' ? <MyEpidays userId={session.id} /> : <MyComments />}
+      {selectedActivity === 'epiday' ? <MyEpidays userId={session.id} /> : <MyComments userId={session.id} accessToken={session.accessToken} />}
     </section>
   );
 };

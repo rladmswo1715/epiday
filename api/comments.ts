@@ -28,6 +28,26 @@ export const getEpidayCommentsById = async (id: number, accessToken: string, pag
   }
 };
 
+export const getUserComments = async (userId: string, accessToken: string, pageParam: number, limit = 4) => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/${userId}/comments?limit=${limit}&cursor=${pageParam}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+
+      if (errorData.message === 'jwt expired') throw { message: '토큰 유효기간 만료' };
+      throw { message: errorData.message || '나의 댓글 불러오기 실패', details: errorData.details };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const postAddComment = async (commentData: CommentData, accessToken: string) => {
   try {
     const response = await fetch(`${BASE_URL}/comments`, {
