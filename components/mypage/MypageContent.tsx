@@ -7,8 +7,8 @@ import MypageUserInfoContainer from './MypageUserInfoContainer';
 
 const MypageContent = () => {
   return (
-    <div className='pt-[12.8rem]'>
-      <div className='rounded-[2.4rem] bg-var-blue-100'>
+    <div className='pb-[25rem] pt-[12.8rem]'>
+      <div className='rounded-[2.4rem] bg-var-blue-100 pb-[8.8rem]'>
         <InnerLayout>
           <MypageUserInfoContainer />
           <MypageEmotionContainer />

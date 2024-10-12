@@ -9,13 +9,13 @@ import Link from 'next/link';
 const RecentEpidaysContainer = () => {
   const { data } = useQuery({
     queryKey: ['epidays', 'recent'],
-    queryFn: () => getEpidayList(0, undefined, 3),
+    queryFn: () => getEpidayList(0, undefined, undefined, 3),
   });
 
   return (
     <div>
       <h3 className='text-[2.4rem] font-[600] text-var-black-600'>최신 에피그램</h3>
-      <div className='gat-[1.6rem] mt-[4rem] flex flex-col'>
+      <div className='mt-[4rem] flex flex-col gap-[1.6rem]'>
         {data?.list.map((item) => {
           return (
             <Fragment key={item.id}>

@@ -21,9 +21,10 @@ export const getEpidayData = async (id: number, accessToken: string) => {
   }
 };
 
-export const getEpidayList = async (pageParam: number, searchText = '', limit = 6) => {
+export const getEpidayList = async (pageParam: number, searchText = '', writerId?: string, limit = 6) => {
   let queryString = `limit=${limit}&cursor=${pageParam}`;
   if (searchText && searchText !== '') queryString += `&keyword=${searchText}`;
+  if (writerId) queryString += `&writerId=${writerId}`;
 
   try {
     const response = await fetch(`${BASE_URL}/epigrams/?${queryString}`, {
