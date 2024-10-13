@@ -12,7 +12,7 @@ const DetailEpiday = ({ params }: EditEpidayPage) => {
   return (
     <div className='bg-var-background'>
       <LikeContainer epidayId={epidayId} />
-      <div className='overflow-x-hidde mt-[-2.5rem] w-full'>
+      <div className='mt-[-2.5rem] w-full overflow-x-hidden'>
         <Image src={detailLine} alt='배경' width={2640} height={54} className='w-[264rem] max-w-[264rem]' />
       </div>
       <CommentsContainer epidayId={epidayId} />
