@@ -73,7 +73,7 @@ export default function Login() {
   const combinedMessage = message || formErrors.email || formErrors.password;
 
   return (
-    <section className='relative flex w-[64rem] flex-col items-center gap-[6rem] pb-[21.9rem] pt-[21.3rem]'>
+    <section className='relative mx-auto flex w-[64rem] flex-col items-center gap-[6rem] pb-[21.9rem] pt-[21.3rem]'>
       {loading && <Spinner />}
       <Image src={Logo} alt='로고' width={152} height={48} />
 
