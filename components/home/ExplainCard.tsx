@@ -1,6 +1,6 @@
 import mainLanding1 from '@/public/images/main-landing-1.png';
-import mainLanding2 from '@/public/images/main-landing-2.jpg';
-import mainLanding3 from '@/public/images/main-landing-3.jpg';
+import mainLanding2 from '@/public/images/main-landing-2.png';
+import mainLanding3 from '@/public/images/main-landing-3.png';
 import Image from 'next/image';
 
 const cardContent = {

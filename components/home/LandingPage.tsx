@@ -3,8 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import detailLine from '@/public/images/detail-line.png';
 import moreView from '@/public/images/icon/more-view.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ExplainCard from './ExplainCard';
+import mainLanding4 from '@/public/images/main-landing-4.png';
+import { scroller } from 'react-scroll';
 
 const LandingPage = () => {
   const [showMore, setShowMore] = useState(false);
@@ -12,6 +14,17 @@ const LandingPage = () => {
   const handleMoreClick = () => {
     setShowMore(!showMore);
   };
+
+  useEffect(() => {
+    if (showMore) {
+      scroller.scrollTo('moreSection', {
+        duration: 700,
+        delay: 0,
+        smooth: 'easeInOutQuart',
+        offset: -100,
+      });
+    }
+  }, [showMore]);
 
   return (
     <>
@@ -48,14 +61,46 @@ const LandingPage = () => {
       </div>
       {showMore && (
         <>
-          <div className={`transform pb-[21rem] transition-transform duration-500 ease-in-out ${showMore ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0'}`}>
+          <div id='moreSection' className='pb-[21rem]'>
             <div className='mt-[24rem] space-y-[38rem]'>
               <ExplainCard isReversed={false} order='first' />
               <ExplainCard isReversed={true} order='second' />
               <ExplainCard isReversed={false} order='third' />
             </div>
           </div>
-          <div></div>
+          <div className='mt-[20rem] flex flex-col items-center pb-[6rem]'>
+            <span className='text-[3.2rem] font-[700] leading-[4.6rem] text-var-black-950'>
+              사용자들이 직접
+              <br />
+              인용한 에피그램들
+            </span>
+            <Image src={mainLanding4} alt='메인 랜딩이미지' width={640} height={864} className='mt-[10rem]' />
+          </div>
+          <div className='relative bg-var-blue-100'>
+            <div className='absolute top-[-2.5rem] mt-[-2rem] w-full overflow-hidden scrollbar-hide'>
+              <Image src={detailLine} alt='배경' width={2640} height={54} className='w-[264rem] max-w-[264rem] scale-y-[-1] transform' />
+            </div>
+
+            <section
+              className='flex flex-col justify-center'
+              style={{
+                backgroundImage: 'repeating-linear-gradient(white, white 37px, #F2F2F2 40px)',
+              }}
+            >
+              <div className='mx-auto my-[25rem] flex w-fit flex-col'>
+                <p className='text-center text-[4rem] font-[900] leading-[6.4rem] text-var-black-500'>
+                  날마다
+                  <br />
+                  에피데이
+                </p>
+                <Link href='/login'>
+                  <div className='mx-auto mt-[4.8rem] flex w-fit items-center rounded-[1.2rem] bg-var-black-500 px-[10.8rem] py-[1.6rem]'>
+                    <span className='text-[2rem] font-[600] text-var-black-100'>시작하기</span>
+                  </div>
+                </Link>
+              </div>
+            </section>
+          </div>
         </>
       )}
     </>
