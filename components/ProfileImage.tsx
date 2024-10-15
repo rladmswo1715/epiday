@@ -4,7 +4,7 @@ import defaultProfile from '@/public/images/icon/default-user.svg';
 interface IProfileImageProps {
   size: string;
   userSetting: string;
-  onClick?: () => void;
+  onClick?: (params?: any) => void;
 }
 
 const ProfileImage = ({ size, userSetting, onClick }: IProfileImageProps) => {

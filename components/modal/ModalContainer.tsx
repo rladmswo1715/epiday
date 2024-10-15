@@ -3,6 +3,7 @@
 import { useModalStore } from '@/store/modalStore';
 import ConfirmDelete from './modalContent/ConfirmDelete';
 import Profile from './modalContent/Profile';
+import ProfileEdit from './modalContent/ProfileEdit';
 
 const ModalContainer = () => {
   const { modalType, isOpen } = useModalStore();
@@ -17,6 +18,8 @@ const ModalContainer = () => {
         return <ConfirmDelete />;
       case 'profile':
         return <Profile />;
+      case 'profileEdit':
+        return <ProfileEdit />;
       default:
         return null;
     }
