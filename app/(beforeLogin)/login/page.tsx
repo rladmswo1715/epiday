@@ -61,7 +61,7 @@ export default function Login() {
       if (response?.error) {
         setMessage('아이디 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.');
       } else {
-        router.replace('/');
+        router.replace('/epidays');
       }
     } catch (error) {
       setMessage('로그인 오류 발생');
