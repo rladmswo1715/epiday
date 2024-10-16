@@ -3,6 +3,7 @@ import Logo from '@/public/images/icon/logo.svg';
 import RQProvider from '@/components/provider/RQProvider';
 import ModalContainer from '@/components/modal/ModalContainer';
 import Link from 'next/link';
+import HeaderUserInfo from '@/components/HeaderUserInfo';
 
 const AfterLoginLayOut = ({ children }) => {
   return (
@@ -19,7 +20,7 @@ const AfterLoginLayOut = ({ children }) => {
             검색
           </Link>
         </div>
-        <span className='text-[1.4rem] font-[500] leading-[2.4rem] text-var-gray-300'>김코드</span>
+        <HeaderUserInfo />
       </header>
       <RQProvider>
         {children}

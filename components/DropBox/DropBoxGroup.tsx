@@ -8,9 +8,11 @@ import { useRouter } from 'next/navigation';
 interface IItemsProps<T> {
   items: string[];
   data?: T;
+  hideTrigger?: boolean;
+  triggerElement?: React.ReactNode;
 }
 
-const DropBoxGroup = <T,>({ items, data }: IItemsProps<T>) => {
+const DropBoxGroup = <T,>({ items, data, hideTrigger = false, triggerElement }: IItemsProps<T>) => {
   const [isVisible, setIsVisible] = useState(false);
   const dropBoxRef = useRef<HTMLDivElement>(null);
   const epidayId = data;
@@ -44,9 +46,8 @@ const DropBoxGroup = <T,>({ items, data }: IItemsProps<T>) => {
 
   return (
     <div className='relative' ref={dropBoxRef}>
-      <button onClick={handleToggleDropBox}>
-        <Image src={menu} alt='메뉴' width={36} height={36} />
-      </button>
+      {!hideTrigger && <button onClick={handleToggleDropBox}>{triggerElement ? triggerElement : <Image src={menu} alt='메뉴' width={36} height={36} />}</button>}
+      {triggerElement && hideTrigger && <div onClick={handleToggleDropBox}>{triggerElement}</div>}
       {isVisible && (
         <ul className='absolute right-0 rounded-[1.6rem] border-[0.1rem] bg-var-background'>
           {items.map((item) => {
