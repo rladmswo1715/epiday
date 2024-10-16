@@ -8,6 +8,8 @@ import { getEpidayList } from '@/api/getEpiday';
 import { IEpidayList } from '@/types/epiday';
 import { useEffect, useMemo, useState } from 'react';
 import Spinner from '../Spinner';
+import SideNav from '../SideNav';
+import { Element } from 'react-scroll';
 
 const FeedContainer = () => {
   const [showSpinner, setShowSpinner] = useState(false);
@@ -42,7 +44,9 @@ const FeedContainer = () => {
 
   return (
     <section className='mx-auto max-w-[124.8rem] px-[2.4rem] pb-[11.4rem]'>
-      <h1 className='pt-[12rem] text-[2.4rem] font-[600] text-var-black-600'>피드</h1>
+      <Element name='top'>
+        <h1 className='pt-[12rem] text-[2.4rem] font-[600] text-var-black-600'>피드</h1>
+      </Element>
       <div className='mt-[4rem] grid grid-cols-2 gap-x-[3rem] gap-y-[4rem]'>
         {epidayFlatMapList.length > 0 &&
           epidayFlatMapList.map((item) => {
@@ -60,6 +64,7 @@ const FeedContainer = () => {
           </button>
         )
       )}
+      <SideNav />
     </section>
   );
 };

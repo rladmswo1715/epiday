@@ -75,6 +75,7 @@ module.exports = {
       boxShadow: {
         feed: '0px 3px 12px 0px rgba(0, 0, 0, 0.04)',
         mypage: '0px 0px 36px 0px rgba(0, 0, 0, 0.05)',
+        sideNav: '4px 4px 4px 0px rgba(172, 172, 172, 0.25)',
       },
     },
   },

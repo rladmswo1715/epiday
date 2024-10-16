@@ -1,11 +1,15 @@
 import InnerLayout from '@/components/InnerLayout';
 import MainAfterLogin from '@/components/main/afterLogin/MainAfterLogin';
+import SideNav from '@/components/SideNav';
 
 const Epidays = () => {
   return (
-    <InnerLayout>
-      <MainAfterLogin />
-    </InnerLayout>
+    <div className='relative'>
+      <InnerLayout>
+        <MainAfterLogin />
+      </InnerLayout>
+      <SideNav />
+    </div>
   );
 };
 
