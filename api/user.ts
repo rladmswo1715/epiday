@@ -88,6 +88,6 @@ export const patchEditProfile = async (patchProfileData: TPatchUser, accessToken
 
     return await response.json();
   } catch (error) {
-    console.error(error);
+    throw error;
   }
 };
