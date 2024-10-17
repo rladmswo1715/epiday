@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { addEpidaySchema, AddEpidaySchema } from '@/schema/addEpidaySchema';
 import { patchEpiday } from '@/api/patchEpiday';
 import InnerLayout from '../InnerLayout';
+import { IEpidayData } from '@/types/epiday';
 
 type EpidayFormProps = {
   epidayId?: number;
@@ -100,7 +101,7 @@ const EpidayForm = ({ epidayId, initialData, isEdit = false }: EpidayFormProps) 
 
     try {
       setLoading(true);
-      let result = '';
+      let result;
       if (isEdit) {
         result = await patchEpiday(epidayId, epidayData, session?.accessToken);
       } else {
@@ -108,7 +109,8 @@ const EpidayForm = ({ epidayId, initialData, isEdit = false }: EpidayFormProps) 
       }
 
       if (result && result !== '') {
-        router.replace(`/epidays/${epidayId}`);
+        let moveToEpidayId = epidayId || result?.id;
+        router.replace(`/epidays/${moveToEpidayId}`);
       }
     } catch (error) {
       alert(error?.message);
