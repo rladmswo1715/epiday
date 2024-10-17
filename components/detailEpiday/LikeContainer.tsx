@@ -4,7 +4,7 @@ import Image from 'next/image';
 import like from '@/public/images/icon/like.svg';
 import share from '@/public/images/icon/share.svg';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getEpidayData } from '@/api/getEpiday';
+import { deleteEpiday, getEpidayData } from '@/api/getEpiday';
 import { useSession } from 'next-auth/react';
 import Spinner from '../Spinner';
 import { authorFilter } from '@/utils/commonFunction';
@@ -13,11 +13,13 @@ import { deleteLike, postLike } from '@/api/like';
 import Link from 'next/link';
 import { IEpidayData, ITag } from '@/types/epiday';
 import InnerLayout from '../InnerLayout';
+import { useRouter } from 'next/navigation';
 
 const DropBoxitemList = ['수정하기', '삭제하기'];
 
 const LikeContainer = ({ epidayId }: { epidayId: number }) => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const queryClient = useQueryClient();
   const { data, isLoading, isFetching } = useQuery({
@@ -50,9 +52,26 @@ const LikeContainer = ({ epidayId }: { epidayId: number }) => {
     },
   });
 
+  const epidayDeleteMutation = useMutation({
+    mutationFn: async () => {
+      await deleteEpiday(epidayId, session.accessToken);
+    },
+    onSuccess: () => {
+      alert('삭제 성공');
+      router.replace('/feed');
+    },
+    onError: (err) => {
+      alert(err.message);
+    },
+  });
+
   const handleLikeButtonClick = () => {
     const userAction = data?.isLiked ? 'UNLIKE_POST' : 'LIKE_POST';
     likeMutation.mutate(userAction);
+  };
+
+  const handleDeleteButtonClick = () => {
+    epidayDeleteMutation.mutate();
   };
 
   const handleShareButtonClick = () => {
@@ -88,7 +107,7 @@ const LikeContainer = ({ epidayId }: { epidayId: number }) => {
                 );
               })}
             </div>
-            {String(data?.writerId) === session?.id && <DropBoxGroup items={DropBoxitemList} data={epidayId} />}
+            {String(data?.writerId) === session?.id && <DropBoxGroup items={DropBoxitemList} data={epidayId} itemClickEvent={[handleDeleteButtonClick]} />}
           </div>
           <q className='break-all font-iropke text-[3.2rem] leading-[4.8rem] text-var-black-700 quotes-none'>{data?.content}</q>
           <cite className='text-right font-iropke text-[2.4rem] leading-[4rem] text-var-blue-400'>{authorFilter(data?.author)}</cite>

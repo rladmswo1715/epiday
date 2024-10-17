@@ -10,9 +10,10 @@ interface IItemsProps<T> {
   data?: T;
   hideTrigger?: boolean;
   triggerElement?: React.ReactNode;
+  itemClickEvent?: (() => void)[];
 }
 
-const DropBoxGroup = <T,>({ items, data, hideTrigger = false, triggerElement }: IItemsProps<T>) => {
+const DropBoxGroup = <T,>({ items, data, hideTrigger = false, triggerElement, itemClickEvent }: IItemsProps<T>) => {
   const [isVisible, setIsVisible] = useState(false);
   const dropBoxRef = useRef<HTMLDivElement>(null);
   const epidayId = data;
@@ -31,12 +32,17 @@ const DropBoxGroup = <T,>({ items, data, hideTrigger = false, triggerElement }: 
   const handleClick = (item: string) => {
     switch (item) {
       case '수정하기':
-        if (epidayId) {
-          router.push(`/epidays/${epidayId}/edit`);
-        }
+        if (epidayId) router.push(`/epidays/${epidayId}/edit`);
+
         break;
       case '삭제하기':
-        alert('삭제하기 클릭됨!');
+        if (epidayId && itemClickEvent.length > 0) itemClickEvent[0]();
+        break;
+      case '마이페이지':
+        router.push('/mypage');
+        break;
+      case '로그아웃':
+        if (itemClickEvent.length > 0) itemClickEvent[0]();
         break;
       default:
         break;
