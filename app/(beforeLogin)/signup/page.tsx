@@ -6,21 +6,12 @@ import SignSns from '@/components/SignSns';
 import { useState } from 'react';
 import { postSignUp } from '@/api/user';
 import AuthInput from '@/components/input/AuthInput';
-import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Spinner from '@/components/Spinner';
-
-const signUpSchema = z.object({
-  email: z.string().email('id는 이메일 형식입니다.'),
-  password: z.string().regex(/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$/, '비밀번호는 숫자, 영어, 특수문자를 포함해야 하며 8자 이상이어야 합니다.'),
-  nickname: z.string().min(1),
-  passwordConfirmation: z.string().min(1),
-});
-
-type SignUpSchema = z.infer<typeof signUpSchema>;
+import { signUpSchema, SignUpSchema } from '@/schema/signUpSchema';
 
 export default function Signup() {
   const [messageType, setMessageType] = useState('');
@@ -45,7 +36,7 @@ export default function Signup() {
 
   watch((value, { name }) => {
     // 비밀번호 확인 에러 메세지 일 때, 그냥 비밀번호 입력 칸 수정해도 초기화 하려고 두번째 조건 넣음
-    if (name === messageType || (messageType === 'passwordConfirmation' && name === 'password')) {
+    if (name === messageType || ((messageType === 'passwordConfirmation' || messageType === 'requestBody.passwordConfirmation') && name === 'password')) {
       clearMessageOnChange();
     }
   });
@@ -89,7 +80,7 @@ export default function Signup() {
   };
 
   return (
-    <section className='flex w-[64rem] flex-col items-center pb-[17.5rem] pt-[8rem]'>
+    <section className='mx-auto flex w-[64rem] flex-col items-center pb-[17.5rem] pt-[8rem]'>
       {loading && <Spinner />}
       <Image src={Logo} alt='로고' width={172} height={48} className='mb-[8rem]' />
       <form className='mb-[6rem] flex w-full flex-col gap-[4rem]' onSubmit={handleSubmit(onSubmit)}>
@@ -107,7 +98,12 @@ export default function Signup() {
               isValueOpen
               {...register('passwordConfirmation')}
               placeholderText='비밀번호 확인'
-              errorMessage={(messageType === 'passwordConfirmation' && message) || errors.passwordConfirmation?.message || errors.password?.message}
+              errorMessage={
+                (messageType === 'passwordConfirmation' && message) ||
+                (messageType === 'requestBody.passwordConfirmation' && '비밀번호가 일치하지 않습니다.') ||
+                errors.passwordConfirmation?.message ||
+                errors.password?.message
+              }
             />
           </div>
         </div>

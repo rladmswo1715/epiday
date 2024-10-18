@@ -1,7 +1,6 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Logo from '@/public/images/icon/logo.svg';
@@ -12,13 +11,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import AuthInput from '@/components/input/AuthInput';
 import Spinner from '@/components/Spinner';
-
-const loginSchema = z.object({
-  email: z.string().email('id는 이메일 형식입니다.'),
-  password: z.string().min(1, '비밀번호를 입력해 주세요.'),
-});
-
-type LoginSchema = z.infer<typeof loginSchema>;
+import { loginSchema, LoginSchema } from '@/schema/loginSchema';
 
 export default function Login() {
   const [message, setMessage] = useState('');
