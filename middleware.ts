@@ -1,3 +1,13 @@
-export { auth as middleware } from './auth';
+import { auth } from './auth';
+import { NextResponse } from 'next/server';
 
-export const config = { matcher: ['/aaa'] };
+export async function middleware() {
+  const session = await auth();
+  if (!session) {
+    return NextResponse.redirect('http://localhost:3000/login');
+  }
+}
+
+export const config = {
+  matcher: ['/epidays/:path*', '/addepiday', '/feed', '/search', '/mypage'],
+};
