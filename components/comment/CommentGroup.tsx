@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import CommentCard from './CommentCard';
 import noData from '@/public/images/icon/no-data.svg';
-import { IComment, ICommentsList } from '@/types/comments';
+import { IComment } from '@/types/comments';
 import { Fragment } from 'react';
 
 interface ICommentGroupProps {

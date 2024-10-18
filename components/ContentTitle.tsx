@@ -1,4 +1,14 @@
-const ContentTitle = ({ children, contentTitle, fontSizeStyle, marginStyle, isRequired = false }) => {
+import { ReactNode } from 'react';
+
+interface IContentTitleProps {
+  children: ReactNode;
+  contentTitle: string;
+  fontSizeStyle: string;
+  marginStyle: string;
+  isRequired?: boolean;
+}
+
+const ContentTitle = ({ children, contentTitle, fontSizeStyle, marginStyle, isRequired = false }: IContentTitleProps) => {
   return (
     <fieldset className='flex flex-col'>
       <legend className={`${marginStyle} ${fontSizeStyle} flex items-center font-[600] leading-[3.2rem] sm:leading-[2.4rem]`}>

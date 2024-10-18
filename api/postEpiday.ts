@@ -1,9 +1,15 @@
 import { auth } from '@/auth';
 import BASE_URL from '@/constant/url';
 
-interface IPostAddEpiday {}
+interface IEpidayData {
+  tags: string[];
+  author: string;
+  referenceUrl: string;
+  content?: string;
+  referenceTitle?: string;
+}
 
-export const postAddEpiday = async (epidayData: IPostAddEpiday, accessToken: string) => {
+export const postAddEpiday = async (epidayData: IEpidayData, accessToken: string) => {
   try {
     const response = await fetch(`${BASE_URL}/epigrams`, {
       method: 'POST',

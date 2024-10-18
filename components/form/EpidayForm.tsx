@@ -15,7 +15,6 @@ import { useRouter } from 'next/navigation';
 import { addEpidaySchema, AddEpidaySchema } from '@/schema/addEpidaySchema';
 import { patchEpiday } from '@/api/patchEpiday';
 import InnerLayout from '../InnerLayout';
-import { IEpidayData } from '@/types/epiday';
 
 type EpidayFormProps = {
   epidayId?: number;

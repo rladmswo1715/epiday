@@ -4,6 +4,7 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
 import { useMemo } from 'react';
+import { IComment } from '@/types/comments';
 
 const RecentCommentsContainer = () => {
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
@@ -13,7 +14,7 @@ const RecentCommentsContainer = () => {
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
-  const commentFlatMapList = useMemo(() => {
+  const commentFlatMapList: IComment[] = useMemo(() => {
     return data?.pages.flatMap((page) => page.list) || [];
   }, [data]);
 

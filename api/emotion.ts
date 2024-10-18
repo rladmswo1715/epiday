@@ -1,7 +1,8 @@
 import BASE_URL from '@/constant/url';
+import { TEmotions } from '@/types/emotion';
 
 interface IPostTodayEmotionParam {
-  emotion: string;
+  emotion: TEmotions;
 }
 
 export const postTodayEmotion = async (emotion: IPostTodayEmotionParam, accessToken: string) => {

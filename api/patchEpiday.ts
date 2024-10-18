@@ -1,6 +1,14 @@
 import BASE_URL from '@/constant/url';
 
-export const patchEpiday = async (epidayId, epidayData, accessToken: string) => {
+interface IEpidayData {
+  tags: string[];
+  author: string;
+  referenceUrl: string;
+  content?: string;
+  referenceTitle?: string;
+}
+
+export const patchEpiday = async (epidayId: number, epidayData: IEpidayData, accessToken: string) => {
   try {
     const response = await fetch(`${BASE_URL}/epigrams/${epidayId}`, {
       method: 'PATCH',

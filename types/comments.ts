@@ -17,3 +17,8 @@ export interface IComment {
   content: string;
   id: number;
 }
+
+export type TCommentData = {
+  isPrivate: boolean;
+  content: string;
+};

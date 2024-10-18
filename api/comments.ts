@@ -1,13 +1,14 @@
 import BASE_URL from '@/constant/url';
+import { TCommentData } from '@/types/comments';
 
-type CommentData = {
-  isPrivate: boolean;
-  content: string;
+type TPostCommentData = TCommentData & {
+  epigramId: number;
 };
 
-type PatchCommentData = CommentData & {
+type TPatchCommentData = TCommentData & {
   commentId: number;
 };
+
 export const getEpidayCommentsById = async (id: number, accessToken: string, pageParam: number, limit = 2) => {
   try {
     const response = await fetch(`${BASE_URL}/epigrams/${id}/comments?limit=${limit}&cursor=${pageParam}`, {
@@ -48,7 +49,7 @@ export const getUserComments = async (userId: string, accessToken: string, pageP
   }
 };
 
-export const postAddComment = async (commentData: CommentData, accessToken: string) => {
+export const postAddComment = async (commentData: TPostCommentData, accessToken: string) => {
   try {
     const response = await fetch(`${BASE_URL}/comments`, {
       method: 'POST',
@@ -72,7 +73,7 @@ export const postAddComment = async (commentData: CommentData, accessToken: stri
   }
 };
 
-export const patchUpdateComment = async (commentData: PatchCommentData, accessToken: string) => {
+export const patchUpdateComment = async (commentData: TPatchCommentData, accessToken: string) => {
   try {
     const { commentId, ...dataToPatch } = commentData;
 

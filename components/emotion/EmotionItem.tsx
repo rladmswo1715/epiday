@@ -1,4 +1,5 @@
 import { useEmotionStore } from '@/store/emotionStore';
+import { TEmotions } from '@/types/emotion';
 import classNames from 'classnames';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -7,7 +8,7 @@ import React from 'react';
 interface IEmotionItemProps {
   src: string;
   emotionText: string;
-  value: 'MOVED' | 'HAPPY' | 'WORRIED' | 'SAD' | 'ANGRY';
+  value: TEmotions;
   isSelected: boolean;
 }
 

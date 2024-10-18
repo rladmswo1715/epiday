@@ -2,16 +2,15 @@ import { timeAgo } from '@/utils/formatDate';
 import ProfileImage from '../ProfileImage';
 import { useModalStore } from '@/store/modalStore';
 import { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import VisibilityToggle from '../VisibilityToggle';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import { useSession } from 'next-auth/react';
 import { patchUpdateComment } from '@/api/comments';
+import { TCommentData } from '@/types/comments';
 
-type TPatchCommentData = {
+type TPatchCommentData = TCommentData & {
   commentId: number;
-  isPrivate: boolean;
-  content: string;
 };
 
 const CommentCard = ({ cardData }) => {

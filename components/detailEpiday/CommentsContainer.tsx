@@ -4,20 +4,18 @@ import { useSession } from 'next-auth/react';
 import CommentGroup from '../comment/CommentGroup';
 import ProfileImage from '../ProfileImage';
 import VisibilityToggle from '../VisibilityToggle';
-import { InfiniteData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { InfiniteData, useInfiniteQuery, useMutation } from '@tanstack/react-query';
 import { getEpidayCommentsById, postAddComment } from '@/api/comments';
 import { useEffect, useMemo, useState } from 'react';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import Spinner from '../Spinner';
-import { ICommentsList } from '@/types/comments';
+import { ICommentsList, TCommentData } from '@/types/comments';
 import { useInView } from 'react-intersection-observer';
 import { throttle } from 'lodash';
 import InnerLayout from '../InnerLayout';
 
-type TPostCommentData = {
+type TPostCommentData = TCommentData & {
   epigramId: number;
-  isPrivate: boolean;
-  content: string;
 };
 
 const CommentsContainer = ({ epidayId }: { epidayId: number }) => {

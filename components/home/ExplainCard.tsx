@@ -1,9 +1,18 @@
 import mainLanding1 from '@/public/images/main-landing-1.png';
 import mainLanding2 from '@/public/images/main-landing-2.png';
 import mainLanding3 from '@/public/images/main-landing-3.png';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
-const cardContent = {
+type TCardContentIndex = 'first' | 'second' | 'third';
+
+const cardContent: Record<
+  TCardContentIndex,
+  {
+    img: StaticImageData;
+    title: string[];
+    content: string[];
+  }
+> = {
   first: {
     img: mainLanding1,
     title: ['명언이나 글귀,', '토막 상식들을 공유해 보세요.'],
@@ -21,7 +30,12 @@ const cardContent = {
   },
 };
 
-const ExplainCard = ({ order, isReversed }) => {
+interface IExplainCardProps {
+  order: TCardContentIndex;
+  isReversed: boolean;
+}
+
+const ExplainCard = ({ order, isReversed }: IExplainCardProps) => {
   return (
     <div className={`mx-auto grid max-w-[118.8rem] grid-cols-[auto_1fr] items-end gap-[8rem] ${isReversed ? 'grid-flow-col-dense' : ''}`}>
       <Image className={`${isReversed ? 'order-2' : 'order-1'}`} src={cardContent[order].img} alt='예시' width={744} height={388} />

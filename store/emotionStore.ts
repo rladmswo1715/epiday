@@ -1,19 +1,10 @@
 import { getTodayEmotion, postTodayEmotion } from '@/api/emotion';
-import { useSession } from 'next-auth/react';
+import { TEmotions } from '@/types/emotion';
 import { create } from 'zustand';
 
-type TEmotion = 'MOVED' | 'HAPPY' | 'WORRIED' | 'SAD' | 'ANGRY' | null;
-
-type TResponseEmotion = {
-  id: number;
-  userId: number;
-  emotion: string;
-  createdAt: string;
-};
-
 interface IEmotionStore {
-  selectedEmotion: TEmotion;
-  setSelectedEmotion: (emotion: TEmotion) => void;
+  selectedEmotion: TEmotions | null;
+  setSelectedEmotion: (emotion: TEmotions | null) => void;
   postEmotion: (accessToken: string) => Promise<void>;
   getEmotion: (userId: string) => Promise<Response>;
 }
