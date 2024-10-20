@@ -1,9 +1,10 @@
 import { getTodayEpiday } from '@/api/getEpiday';
 import EpidayCard from '@/components/feed/EpidayCard';
+import { IEpidayData } from '@/types/epiday';
 import { useQuery } from '@tanstack/react-query';
 
 const TodayEpidayContainer = () => {
-  const { data, isError } = useQuery({
+  const { data, isError } = useQuery<IEpidayData | false, Error, IEpidayData, [_1: string, _2: string]>({
     queryKey: ['epiday', 'today'],
     queryFn: async () => {
       try {

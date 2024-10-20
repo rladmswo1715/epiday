@@ -1,11 +1,15 @@
 import { EMOTION_IMAGE_SRC, EMOTION_OPTIONS, EMOTIONS } from '@/constant/emotion';
-import { TEmotions } from '@/types/emotion';
+import { TEmotionData, TEmotions } from '@/types/emotion';
 import 'chart.js/auto';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
-const EmotionChart = ({ initialData }) => {
+interface IEmotionChartProps {
+  initialData: TEmotionData[];
+}
+
+const EmotionChart = ({ initialData }: IEmotionChartProps) => {
   const [emotionRatio, setEmotionRatio] = useState<Record<TEmotions, number>>(
     EMOTIONS.reduce(
       (acc, item) => {

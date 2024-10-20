@@ -14,8 +14,9 @@ import emotionHappy from '@/public/images/icon/emotion-happy.svg';
 import emotionSad from '@/public/images/icon/emotion-sad.svg';
 import emotionWorried from '@/public/images/icon/emotion-worried.svg';
 import EmotionChart from './EmotionChart';
+import { TEmotionData, TEmotions } from '@/types/emotion';
 
-const emotionsSrc = {
+const emotionsSrc: Record<TEmotions, string> = {
   MOVED: emotionMoved.src,
   HAPPY: emotionHappy.src,
   WORRIED: emotionWorried.src,
@@ -31,7 +32,7 @@ const EmotionCalendar = () => {
   const year = format(monthStart, 'yyyy');
   const month = format(monthStart, 'M');
 
-  const { data, refetch } = useQuery({
+  const { data, refetch } = useQuery<TEmotionData[], Error, TEmotionData[], string[]>({
     queryKey: ['mypage', 'emotions'],
     queryFn: () => getMonthlyEmotion(session?.id, year, month),
     enabled: !!session,

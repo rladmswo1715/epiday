@@ -1,10 +1,13 @@
+import { ChangeEvent } from 'react';
+
 interface ITextInputProps {
-  cssStyle?: string;
-  placeholder: string;
-  maxLength?: number;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyup: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const AddTagInput = ({ value, onChange, onKeyup, onKeyDown }) => {
+const AddTagInput = ({ value, onChange, onKeyup, onKeyDown }: ITextInputProps) => {
   return (
     <input
       className='h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1.6rem] text-[2rem] focus:outline-none sm:h-[4.4rem] sm:text-[1.6rem] sm:leading-[2.6rem]'

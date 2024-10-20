@@ -5,9 +5,10 @@ import { Fragment } from 'react';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
 import Link from 'next/link';
+import { IEpidayList } from '@/types/epiday';
 
 const RecentEpidaysContainer = () => {
-  const { data } = useQuery({
+  const { data } = useQuery<IEpidayList, Error, IEpidayList, [_1: string, _2: string]>({
     queryKey: ['epidays', 'recent'],
     queryFn: () => getEpidayList(0, undefined, undefined, 3),
   });

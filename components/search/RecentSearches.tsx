@@ -1,5 +1,3 @@
-import { useRouter } from 'next/navigation';
-
 interface IRecentSearches {
   searchList: string[];
   onTextClick: (event: React.MouseEvent<HTMLButtonElement>, text: string) => void;
