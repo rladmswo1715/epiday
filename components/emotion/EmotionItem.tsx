@@ -2,6 +2,7 @@ import { useEmotionStore } from '@/store/emotionStore';
 import { TEmotions } from '@/types/emotion';
 import classNames from 'classnames';
 import { useSession } from 'next-auth/react';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import React from 'react';
 
@@ -10,17 +11,21 @@ interface IEmotionItemProps {
   emotionText: string;
   value: TEmotions;
   isSelected: boolean;
+  handleGetTodayEmotion: () => Promise<void>;
 }
 
-const EmotionItem = ({ src, emotionText, value, isSelected }: IEmotionItemProps) => {
+const EmotionItem = ({ src, emotionText, value, isSelected, handleGetTodayEmotion }: IEmotionItemProps) => {
   const { setSelectedEmotion, postEmotion } = useEmotionStore();
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   const handleClickEmotion = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setSelectedEmotion(value);
     if (session?.accessToken) {
+      setSelectedEmotion(value);
       await postEmotion(session.accessToken);
+      await handleGetTodayEmotion();
+      queryClient.invalidateQueries({ queryKey: ['mypage', 'emotions'] });
     }
   };
 
