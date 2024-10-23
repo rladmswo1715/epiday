@@ -6,6 +6,7 @@ interface IMyActivityRadioInputProps {
   activityType: TActivityType;
   selectedActivity: TActivityType;
   setSelectedActivity: React.Dispatch<React.SetStateAction<TActivityType>>;
+  totalCount: number;
 }
 
 const initOptions: Record<IMyActivityRadioInputProps['activityType'], Record<'id' | 'text', string>> = {
@@ -19,7 +20,7 @@ const initOptions: Record<IMyActivityRadioInputProps['activityType'], Record<'id
   },
 };
 
-const MyActivityRadioInput = ({ activityType, selectedActivity, setSelectedActivity }: IMyActivityRadioInputProps) => {
+const MyActivityRadioInput = ({ activityType, selectedActivity, setSelectedActivity, totalCount }: IMyActivityRadioInputProps) => {
   return (
     <>
       <input
@@ -31,8 +32,8 @@ const MyActivityRadioInput = ({ activityType, selectedActivity, setSelectedActiv
         onChange={() => setSelectedActivity(activityType)}
         checked={selectedActivity === activityType}
       />
-      <label htmlFor={initOptions[activityType].id} className={classNames('text-[2.4rem] font-[600]', selectedActivity === activityType ? 'text-var-black-600' : 'text-var-gray-300')}>
-        내 {initOptions[activityType].text}(10)
+      <label htmlFor={initOptions[activityType].id} className={classNames('cursor-pointer text-[2.4rem] font-[600]', selectedActivity === activityType ? 'text-var-black-600' : 'text-var-gray-300')}>
+        내 {initOptions[activityType].text}({totalCount})
       </label>
     </>
   );
