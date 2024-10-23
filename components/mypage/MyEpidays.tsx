@@ -1,5 +1,5 @@
 import { getEpidayList } from '@/api/getEpiday';
-import { InfiniteData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import EpidayCard from '../feed/EpidayCard';
 import Image from 'next/image';
@@ -8,32 +8,16 @@ import { IEpidayList } from '@/types/epiday';
 import Spinner from '../Spinner';
 
 interface IMyEpidaysProps {
-  userId: string;
+  data: InfiniteData<IEpidayList, unknown>;
+  fetchNextPage: (options?: FetchNextPageOptions) => Promise<InfiniteQueryObserverResult<InfiniteData<IEpidayList, unknown>, Object>>;
+  hasNextPage: boolean;
+  moreShowSpinner: boolean;
 }
 
-const MyEpidays = ({ userId }: IMyEpidaysProps) => {
-  const [showSpinner, setShowSpinner] = useState(false);
-  const { data, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<IEpidayList, Object, InfiniteData<IEpidayList>, [_1: string, _2: string, _3: string], number>({
-    queryKey: ['epidays', 'mypage', userId],
-    queryFn: ({ pageParam }) => getEpidayList(pageParam, undefined, userId, 3),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
-
+const MyEpidays = ({ data, fetchNextPage, hasNextPage, moreShowSpinner }: IMyEpidaysProps) => {
   const handleFetchNextPage = () => {
     fetchNextPage();
   };
-
-  useEffect(() => {
-    if (isFetching) {
-      const timer = setTimeout(() => {
-        setShowSpinner(true);
-      }, 300);
-      return () => clearTimeout(timer);
-    } else {
-      setShowSpinner(false);
-    }
-  }, [isFetching]);
 
   const epidayFlatMapList = useMemo(() => {
     return data?.pages.flatMap((page) => page.list) || [];
@@ -51,7 +35,7 @@ const MyEpidays = ({ userId }: IMyEpidaysProps) => {
             );
           })}
       </div>
-      {showSpinner ? (
+      {moreShowSpinner ? (
         <Spinner isPageLoading={false} />
       ) : (
         data &&
