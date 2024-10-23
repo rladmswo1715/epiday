@@ -5,6 +5,7 @@ import confirmLogo from '@/public/images/icon/confirm.svg';
 import { deleteComment } from '@/api/comments';
 import { useSession } from 'next-auth/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { usePathname } from 'next/navigation';
 
 const ConfirmDelete = () => {
   const { closeModal, modalProps } = useModalStore();
@@ -12,13 +13,20 @@ const ConfirmDelete = () => {
 
   const { data } = useSession();
   const queryClient = useQueryClient();
+  const pathName = usePathname();
 
   const deleteCommentMutation = useMutation({
     mutationFn: async () => {
       await deleteComment(modalProps.commentId, data.accessToken);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', String(modalProps.epidayId)] });
+      if (pathName === '/epidays') {
+        queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', 'recent'] });
+      } else if (pathName.startsWith('/epidays')) {
+        queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', String(modalProps.epidayId)] });
+      } else if (pathName.startsWith('/mypage')) {
+        queryClient.invalidateQueries({ queryKey: ['epiday', 'mypage', 'comments', data.id] });
+      }
     },
     onSettled: () => {
       closeModal();

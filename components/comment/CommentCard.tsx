@@ -7,26 +7,38 @@ import VisibilityToggle from '../VisibilityToggle';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import { useSession } from 'next-auth/react';
 import { patchUpdateComment } from '@/api/comments';
-import { TCommentData } from '@/types/comments';
+import { IComment, TCommentData } from '@/types/comments';
+import { usePathname } from 'next/navigation';
 
 type TPatchCommentData = TCommentData & {
   commentId: number;
 };
 
-const CommentCard = ({ cardData }) => {
+interface ICommentCardProps {
+  cardData: IComment;
+}
+
+const CommentCard = ({ cardData }: ICommentCardProps) => {
   const { openModal } = useModalStore();
   const [isEditing, setIsEditing] = useState(false);
   const [contentValue, setContentValue] = useState(cardData?.content);
   const [isVisible, setIsVisible] = useState(cardData?.isPrivate);
   const { data: session } = useSession();
   const queryClient = useQueryClient();
+  const pathName = usePathname();
 
   const updateCommentMutation = useMutation({
     mutationFn: async (patchCommentData: TPatchCommentData) => {
       await patchUpdateComment(patchCommentData, session.accessToken);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', String(cardData.epigramId)] });
+      if (pathName === '/epidays') {
+        queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', 'recent'] });
+      } else if (pathName.startsWith('/epidays')) {
+        queryClient.invalidateQueries({ queryKey: ['epiday', 'comments', String(cardData.epigramId)] });
+      } else if (pathName.startsWith('/mypage')) {
+        queryClient.invalidateQueries({ queryKey: ['epiday', 'mypage', 'comments', session.id] });
+      }
     },
     onSettled: () => {
       setIsEditing(false);
