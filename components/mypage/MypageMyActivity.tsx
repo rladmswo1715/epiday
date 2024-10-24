@@ -4,10 +4,8 @@ import MyEpidays from './MyEpidays';
 import MyComments from './MyComments';
 import { useSession } from 'next-auth/react';
 import Spinner from '../Spinner';
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
-import { IEpidayList } from '@/types/epiday';
-import { getEpidayList } from '@/api/getEpiday';
 import useCommentsInfiniteQuery from '@/hooks/useCommentsInfiniteQuery';
+import useEpidaysInfiniteQuery from '@/hooks/useEpidaysInfiniteQuery';
 
 const MypageMyActivity = () => {
   const [selectedActivity, setSelectedActivity] = useState<'epiday' | 'comment'>('epiday');
@@ -16,15 +14,13 @@ const MypageMyActivity = () => {
 
   const {
     data: epidayData,
+    epidayFlatMapList,
     isFetching: isEpidayFetching,
     fetchNextPage: fetchNextEpidayPage,
     hasNextPage: hasNextEpidayPage,
-  } = useInfiniteQuery<IEpidayList, Object, InfiniteData<IEpidayList>, [_1: string, _2: string, _3: string], number>({
-    queryKey: ['epidays', 'mypage', session?.id],
-    queryFn: ({ pageParam }) => getEpidayList(pageParam, undefined, session?.id, 3),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: !!session?.id,
+  } = useEpidaysInfiniteQuery({
+    pageType: 'myEpidays',
+    userId: session?.id,
   });
 
   const {
@@ -41,6 +37,7 @@ const MypageMyActivity = () => {
 
   const epigramListProps = {
     data: epidayData,
+    epidayFlatMapList,
     fetchNextPage: fetchNextEpidayPage,
     hasNextPage: hasNextEpidayPage,
     moreShowSpinner,

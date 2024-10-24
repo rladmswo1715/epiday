@@ -1,27 +1,23 @@
-import { getEpidayList } from '@/api/getEpiday';
 import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult, useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment } from 'react';
 import EpidayCard from '../feed/EpidayCard';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
-import { IEpidayList } from '@/types/epiday';
+import { IEpidayData, IEpidayList } from '@/types/epiday';
 import Spinner from '../Spinner';
 
 interface IMyEpidaysProps {
   data: InfiniteData<IEpidayList, unknown>;
+  epidayFlatMapList: IEpidayData[];
   fetchNextPage: (options?: FetchNextPageOptions) => Promise<InfiniteQueryObserverResult<InfiniteData<IEpidayList, unknown>, Object>>;
   hasNextPage: boolean;
   moreShowSpinner: boolean;
 }
 
-const MyEpidays = ({ data, fetchNextPage, hasNextPage, moreShowSpinner }: IMyEpidaysProps) => {
+const MyEpidays = ({ data, epidayFlatMapList, fetchNextPage, hasNextPage, moreShowSpinner }: IMyEpidaysProps) => {
   const handleFetchNextPage = () => {
     fetchNextPage();
   };
-
-  const epidayFlatMapList = useMemo(() => {
-    return data?.pages.flatMap((page) => page.list) || [];
-  }, [data]);
 
   return (
     <>

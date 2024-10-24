@@ -5,12 +5,10 @@ import Spinner from '../Spinner';
 import RecentSearches from './RecentSearches';
 import SearchForm from './SearchForm';
 import SearchResults from './SearchResults';
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
-import { IEpidayList } from '@/types/epiday';
-import { getEpidayList } from '@/api/getEpiday';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
 import { throttle } from 'lodash';
+import useEpidaysInfiniteQuery from '@/hooks/useEpidaysInfiniteQuery';
 
 const SearchContainer = () => {
   const router = useRouter();
@@ -23,12 +21,9 @@ const SearchContainer = () => {
     return [];
   });
 
-  const { data, isLoading, isFetching, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery<IEpidayList, Object, InfiniteData<IEpidayList>, [_1: string, _2: string], number>({
-    queryKey: ['epiday', 'search'],
-    queryFn: async ({ pageParam }) => await getEpidayList(pageParam, searchText),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: false,
+  const { data, epidayFlatMapList, isLoading, isFetching, fetchNextPage, hasNextPage, refetch } = useEpidaysInfiniteQuery({
+    pageType: 'searchEpidays',
+    searchText,
   });
 
   const { ref, inView } = useInView({
@@ -101,7 +96,7 @@ const SearchContainer = () => {
     <section className='pb-[15rem] pt-[2.4rem]'>
       <SearchForm value={searchText} onChange={handleChangeText} onSubmit={handleSearch} />
       <RecentSearches searchList={recentSearchList} onTextClick={handleClickRecentText} setRecentSearchList={setRecentSearchList} />
-      <SearchResults searchResult={data?.pages} searchText={searchText} />
+      <SearchResults searchFlatMapList={epidayFlatMapList} searchText={searchText} />
       <div ref={ref} className='h-[0.1rem]'></div>
     </section>
   );

@@ -3,21 +3,16 @@
 import EpidayCard from './EpidayCard';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
-import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
-import { getEpidayList } from '@/api/getEpiday';
-import { IEpidayList } from '@/types/epiday';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from '../Spinner';
 import SideNav from '../SideNav';
 import { Element } from 'react-scroll';
+import useEpidaysInfiniteQuery from '@/hooks/useEpidaysInfiniteQuery';
 
 const FeedContainer = () => {
   const [showSpinner, setShowSpinner] = useState(false);
-  const { data, isPending, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery<IEpidayList, Object, InfiniteData<IEpidayList>, [_1: string, _2: string], number>({
-    queryKey: ['epiday', 'list'],
-    queryFn: ({ pageParam }) => getEpidayList(pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  const { epidayFlatMapList, isPending, isFetching, fetchNextPage, hasNextPage } = useEpidaysInfiniteQuery({
+    pageType: 'feedEpidays',
   });
 
   const handleFetchNextPage = () => {
@@ -35,10 +30,6 @@ const FeedContainer = () => {
       setShowSpinner(false);
     }
   }, [isFetching]);
-
-  const epidayFlatMapList = useMemo(() => {
-    return data?.pages.flatMap((page) => page.list) || [];
-  }, [data]);
 
   if (isPending && isFetching) return <Spinner />;
 

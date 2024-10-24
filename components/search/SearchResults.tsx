@@ -1,10 +1,9 @@
-import { IEpidayData, IEpidayList, ITag } from '@/types/epiday';
+import { IEpidayData, ITag } from '@/types/epiday';
 import { authorFilter } from '@/utils/commonFunction';
 import Link from 'next/link';
-import { useMemo } from 'react';
 
 interface ISearchResults {
-  searchResult: IEpidayList[];
+  searchFlatMapList: IEpidayData[];
   searchText: string;
 }
 
@@ -25,11 +24,7 @@ const highlightText = (text: string, searchText: string) => {
   );
 };
 
-const SearchResults = ({ searchResult, searchText }: ISearchResults) => {
-  const searchFlatMapList = useMemo(() => {
-    return searchResult?.flatMap((page) => page.list) || [];
-  }, [searchResult]);
-
+const SearchResults = ({ searchFlatMapList, searchText }: ISearchResults) => {
   return (
     <div className='mt-[4rem] min-h-[30vw]'>
       {searchFlatMapList.map((item: IEpidayData) => {
