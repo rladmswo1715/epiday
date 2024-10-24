@@ -7,8 +7,7 @@ import Spinner from '../Spinner';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { IEpidayList } from '@/types/epiday';
 import { getEpidayList } from '@/api/getEpiday';
-import { ICommentsList } from '@/types/comments';
-import { getUserComments } from '@/api/comments';
+import useCommentsInfiniteQuery from '@/hooks/useCommentsInfiniteQuery';
 
 const MypageMyActivity = () => {
   const [selectedActivity, setSelectedActivity] = useState<'epiday' | 'comment'>('epiday');
@@ -30,15 +29,14 @@ const MypageMyActivity = () => {
 
   const {
     data: commentData,
+    commentFlatMapList,
     isFetching: isCommentFetching,
     fetchNextPage: fetchNextCommentPage,
     hasNextPage: hasNextCommentPage,
-  } = useInfiniteQuery<ICommentsList, Object, InfiniteData<ICommentsList>, [_1: string, _2: string, _3: string, _4: string], number>({
-    queryKey: ['epiday', 'mypage', 'comments', session?.id],
-    queryFn: ({ pageParam }) => getUserComments(session?.id, session?.accessToken, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: !!session?.id,
+  } = useCommentsInfiniteQuery({
+    pageType: 'myComments',
+    userId: session?.id,
+    userToken: session?.accessToken,
   });
 
   const epigramListProps = {
@@ -50,6 +48,7 @@ const MypageMyActivity = () => {
 
   const commentListProps = {
     data: commentData,
+    commentFlatMapList,
     fetchNextPage: fetchNextCommentPage,
     hasNextPage: hasNextCommentPage,
     moreShowSpinner,

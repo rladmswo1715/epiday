@@ -1,22 +1,12 @@
-import { getCommentList } from '@/api/comments';
 import CommentGroup from '@/components/comment/CommentGroup';
-import { InfiniteData, useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
-import { useMemo } from 'react';
-import { IComment, ICommentsList } from '@/types/comments';
+import useCommentsInfiniteQuery from '@/hooks/useCommentsInfiniteQuery';
 
 const RecentCommentsContainer = () => {
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<ICommentsList, Object, InfiniteData<ICommentsList>, [_1: string, _2: string, _3: string], number>({
-    queryKey: ['epiday', 'comments', 'recent'],
-    queryFn: ({ pageParam }) => getCommentList(pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
+  const { data, commentFlatMapList, fetchNextPage, hasNextPage } = useCommentsInfiniteQuery({
+    pageType: 'recentComments',
   });
-
-  const commentFlatMapList = useMemo(() => {
-    return data?.pages.flatMap((page) => page.list) || [];
-  }, [data]);
 
   const handleFetchNextComment = () => {
     fetchNextPage();

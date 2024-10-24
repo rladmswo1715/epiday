@@ -1,7 +1,5 @@
-import { getUserComments } from '@/api/comments';
-import { ICommentsList } from '@/types/comments';
-import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult, useInfiniteQuery } from '@tanstack/react-query';
-import { useEffect, useMemo } from 'react';
+import { IComment, ICommentsList } from '@/types/comments';
+import { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult } from '@tanstack/react-query';
 import CommentGroup from '../comment/CommentGroup';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
@@ -9,16 +7,13 @@ import Spinner from '../Spinner';
 
 interface IMyCommentsProps {
   data: InfiniteData<ICommentsList, unknown>;
+  commentFlatMapList: IComment[];
   fetchNextPage: (options?: FetchNextPageOptions) => Promise<InfiniteQueryObserverResult<InfiniteData<ICommentsList, unknown>, Object>>;
   hasNextPage: boolean;
   moreShowSpinner: boolean;
 }
 
-const MyComments = ({ data, fetchNextPage, hasNextPage, moreShowSpinner }: IMyCommentsProps) => {
-  const commentFlatMapList = useMemo(() => {
-    return data?.pages.flatMap((page) => page.list) || [];
-  }, [data]);
-
+const MyComments = ({ data, commentFlatMapList, fetchNextPage, hasNextPage, moreShowSpinner }: IMyCommentsProps) => {
   const handleFetchNextComment = () => {
     fetchNextPage();
   };

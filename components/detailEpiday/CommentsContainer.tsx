@@ -4,15 +4,16 @@ import { useSession } from 'next-auth/react';
 import CommentGroup from '../comment/CommentGroup';
 import ProfileImage from '../ProfileImage';
 import VisibilityToggle from '../VisibilityToggle';
-import { InfiniteData, useInfiniteQuery, useMutation } from '@tanstack/react-query';
-import { getEpidayCommentsById, postAddComment } from '@/api/comments';
-import { useEffect, useMemo, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { postAddComment } from '@/api/comments';
+import { useEffect, useState } from 'react';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import Spinner from '../Spinner';
-import { ICommentsList, TCommentData } from '@/types/comments';
+import { TCommentData } from '@/types/comments';
 import { useInView } from 'react-intersection-observer';
 import { throttle } from 'lodash';
 import InnerLayout from '../InnerLayout';
+import useCommentsInfiniteQuery from '@/hooks/useCommentsInfiniteQuery';
 
 type TPostCommentData = TCommentData & {
   epigramId: number;
@@ -24,13 +25,10 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
   const [content, setContent] = useState('');
   const [isVisible, setIsVisible] = useState(false);
 
-  // useInfiniteQuery 타입 : <response 데이터 타입, Object, InfiniteData타입, 쿼리 키 타입, pageParam 타입> 순서
-  const { data, isPending, isFetching, refetch, fetchNextPage, hasNextPage } = useInfiniteQuery<ICommentsList, Object, InfiniteData<ICommentsList>, [_1: string, _2: string, _3: string], number>({
-    queryKey: ['epiday', 'comments', String(epidayId)],
-    queryFn: ({ pageParam }) => getEpidayCommentsById(epidayId, session?.accessToken, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    enabled: !!session?.accessToken,
+  const { data, commentFlatMapList, isPending, isFetching, refetch, fetchNextPage, hasNextPage } = useCommentsInfiniteQuery({
+    pageType: 'postComments',
+    userToken: session?.accessToken,
+    epidayId,
   });
 
   const { ref, inView } = useInView({
@@ -69,10 +67,6 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
       alert(error.errors[0].message);
     }
   };
-
-  const commentFlatMapList = useMemo(() => {
-    return data?.pages.flatMap((page) => page.list) || [];
-  }, [data]);
 
   return (
     <section className='bg-var-background pb-[22.8rem] pt-[4.8rem]'>
