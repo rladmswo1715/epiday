@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!session) {
-    if (request.nextUrl.pathname === '/login') {
+    if (request.nextUrl.pathname === '/login' || request.nextUrl.pathname === '/signup') {
       return NextResponse.next();
     }
     return NextResponse.redirect('http://localhost:3000/login');

@@ -48,7 +48,7 @@ export default function Signup() {
     setLoading(true);
     const userInputData = {
       email: data.email,
-      nickname: data.email,
+      nickname: data.nickname,
       password: data.password,
       passwordConfirmation: data.passwordConfirmation,
     };
