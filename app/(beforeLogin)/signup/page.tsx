@@ -75,7 +75,7 @@ export default function Signup() {
     }
 
     if (shouldRedirect) {
-      router.replace('/');
+      router.replace('/epidays');
     }
   };
 

@@ -3,8 +3,10 @@ import { Fragment } from 'react';
 import EpidayCard from '../feed/EpidayCard';
 import Image from 'next/image';
 import plus from '@/public/images/icon/plus.svg';
+import noData from '@/public/images/icon/no-data.svg';
 import { IEpidayData, IEpidayList } from '@/types/epiday';
 import Spinner from '../Spinner';
+import Link from 'next/link';
 
 interface IMyEpidaysProps {
   data: InfiniteData<IEpidayList, unknown>;
@@ -19,17 +21,33 @@ const MyEpidays = ({ data, epidayFlatMapList, fetchNextPage, hasNextPage, moreSh
     fetchNextPage();
   };
 
+  if (epidayFlatMapList.length < 1) {
+    return (
+      <div className='mt-[4rem] flex flex-col items-center gap-[2.4rem] px-[14rem] py-[12.8rem]'>
+        <Image src={noData} alt='댓글 없음' width={144} height={144} />
+        <div className='flex flex-col items-center'>
+          <p className='text-center text-[2rem] text-var-black-600'>
+            아직 작성한 에피그램이 없어요!
+            <br />
+            에피그램을 작성하고 감정을 공유해보세요.
+          </p>
+          <button type='button' className='mt-[4.8rem] rounded-[10rem] border-[0.1rem] border-var-gray-100 px-[2rem] py-[1.2rem] text-[2rem] font-[400] text-var-black-400'>
+            <Link href='/addepiday'>에피그램 만들기</Link>
+          </button>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
       <div className='mt-[4rem] flex flex-col gap-[4.8rem]'>
-        {epidayFlatMapList.length > 0 &&
-          epidayFlatMapList.map((item) => {
-            return (
-              <Fragment key={item.id}>
-                <EpidayCard epidayData={item} />
-              </Fragment>
-            );
-          })}
+        {epidayFlatMapList.map((item) => {
+          return (
+            <Fragment key={item.id}>
+              <EpidayCard epidayData={item} />
+            </Fragment>
+          );
+        })}
       </div>
       {moreShowSpinner ? (
         <Spinner isPageLoading={false} />
