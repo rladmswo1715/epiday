@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import { patchUpdateComment } from '@/api/comments';
 import { IComment, TCommentData } from '@/types/comments';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 type TPatchCommentData = TCommentData & {
   commentId: number;
@@ -76,9 +77,14 @@ const CommentCard = ({ cardData }: ICommentCardProps) => {
             </button>
             <span>{timeAgo(cardData?.createdAt)}</span>
           </p>
-          {String(cardData?.writer.id) === session?.id && (
-            <div className='flex gap-[1.6rem] text-[1.6rem] leading-[1.8rem] underline-offset-[0.2rem]'>
-              {isEditing ? (
+          <div className='flex gap-[1.6rem] text-[1.6rem] leading-[1.8rem] underline-offset-[0.2rem]'>
+            {(pathName === '/epidays' || pathName.startsWith('/mypage')) && (
+              <button className='text-var-blue-500'>
+                <Link href={`/epidays/${cardData.epigramId}`}>게시글 가기</Link>
+              </button>
+            )}
+            {String(cardData?.writer.id) === session?.id &&
+              (isEditing ? (
                 <>
                   <button className='text-var-black-600 underline decoration-var-black-600' onClick={handleSaveClick}>
                     저장
@@ -96,9 +102,8 @@ const CommentCard = ({ cardData }: ICommentCardProps) => {
                     삭제
                   </button>
                 </>
-              )}
-            </div>
-          )}
+              ))}
+          </div>
         </div>
         {isEditing ? (
           <>
