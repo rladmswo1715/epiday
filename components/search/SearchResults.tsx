@@ -1,6 +1,8 @@
 import { IEpidayData, ITag } from '@/types/epiday';
 import { authorFilter } from '@/utils/commonFunction';
 import Link from 'next/link';
+import noData from '@/public/images/icon/no-data.svg';
+import Image from 'next/image';
 
 interface ISearchResults {
   searchFlatMapList: IEpidayData[];
@@ -25,8 +27,22 @@ const highlightText = (text: string, searchText: string) => {
 };
 
 const SearchResults = ({ searchFlatMapList, searchText }: ISearchResults) => {
+  if (searchFlatMapList.length < 1) {
+    return (
+      <div className='mt-[4rem] flex flex-col items-center gap-[2.4rem] px-[14rem] py-[4rem] sm:py-[10rem]'>
+        <Image src={noData} alt='댓글 없음' width={144} height={144} />
+        <div className='flex flex-col items-center'>
+          <p className='text-center text-[2rem] text-var-black-600'>
+            검색과 일치하는
+            <br /> 에피데이가 없어요!
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className='mt-[4rem] min-h-[30vw]'>
+    <div className='mt-[3rem] min-h-[30vw] sm:mt-[4rem]'>
       {searchFlatMapList.map((item: IEpidayData) => {
         return (
           <Link href={`/epidays/${item.id}`} key={item.id} className='w-full'>
