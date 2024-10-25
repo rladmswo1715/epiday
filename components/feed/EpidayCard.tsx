@@ -17,7 +17,7 @@ const EpidayCard = ({ epidayData }: IEpidayCardProps) => {
         }}
       >
         <q className='line-clamp-4 h-[18rem] break-words px-[2.4rem] pt-[2.4rem] font-iropke text-[2.4rem] leading-[4rem] text-var-black-600 quotes-none'>{epidayData.content}</q>
-        <div className='mt-[2rem] bg-white px-[2.4rem] pb-[2.4rem] text-right'>
+        <div className='mt-[2rem] min-h-[6.48rem] bg-white px-[2.4rem] pb-[2.4rem] text-right'>
           <cite className='font-iropke text-[2.4rem] leading-[4rem] text-var-blue-400'>{authorFilter(epidayData.author)}</cite>
         </div>
       </Link>

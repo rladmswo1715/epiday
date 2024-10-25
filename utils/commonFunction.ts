@@ -8,9 +8,15 @@ export const isEmptyValue = (value: string | []) => {
 };
 
 export const authorFilter = (value: string | null) => {
-  if (value) {
-    if (value.startsWith('본인:')) return '- ' + value.replace('본인:', '').trim() + ' -';
-    return '- ' + value + ' -';
+  let returnValue: string | null = value;
+
+  if (returnValue) {
+    if (returnValue.startsWith('본인:')) {
+      returnValue = returnValue.replace('본인:', '').trim();
+    } else if (returnValue === '알 수 없음') {
+      return '';
+    }
+    return '- ' + returnValue + ' -';
   }
-  return value;
+  return returnValue;
 };
