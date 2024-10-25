@@ -32,7 +32,10 @@ const MyActivityRadioInput = ({ activityType, selectedActivity, setSelectedActiv
         onChange={() => setSelectedActivity(activityType)}
         checked={selectedActivity === activityType}
       />
-      <label htmlFor={initOptions[activityType].id} className={classNames('cursor-pointer text-[2.4rem] font-[600]', selectedActivity === activityType ? 'text-var-black-600' : 'text-var-gray-300')}>
+      <label
+        htmlFor={initOptions[activityType].id}
+        className={classNames('cursor-pointer text-[2rem] font-[600] sm:text-[2.4rem]', selectedActivity === activityType ? 'text-var-black-600' : 'text-var-gray-300')}
+      >
         내 {initOptions[activityType].text}({totalCount})
       </label>
     </>

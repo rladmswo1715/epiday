@@ -34,11 +34,11 @@ const FeedContainer = () => {
   if (isPending && isFetching) return <Spinner />;
 
   return (
-    <section className='mx-auto max-w-[124.8rem] px-[2.4rem] pb-[11.4rem]'>
+    <section className='mx-auto max-w-[124.8rem] px-[2.4rem] pb-[6rem] sm:pb-[11.4rem]'>
       <Element name='top'>
-        <h1 className='pt-[12rem] text-[2.4rem] font-[600] text-var-black-600'>피드</h1>
+        <h1 className='pt-[3.2rem] text-[2.4rem] font-[600] text-var-black-600 sm:pt-[12rem]'>피드</h1>
       </Element>
-      <div className='mt-[4rem] grid grid-cols-2 gap-x-[3rem] gap-y-[4rem]'>
+      <div className='mt-[4rem] grid grid-cols-1 gap-x-[3rem] gap-y-[4rem] sm:grid-cols-2'>
         {epidayFlatMapList.length > 0 &&
           epidayFlatMapList.map((item) => {
             return <EpidayCard key={item.id} epidayData={item} />;
@@ -49,7 +49,11 @@ const FeedContainer = () => {
       ) : (
         epidayFlatMapList.length > 0 &&
         hasNextPage && (
-          <button type='button' className='mx-auto mt-[8rem] flex items-center gap-[0.8rem] rounded-[10rem] border-[0.1rem] border-var-line-200 px-[4rem] py-[1.2rem]' onClick={handleFetchNextPage}>
+          <button
+            type='button'
+            className='mx-auto mt-[4rem] flex items-center gap-[0.8rem] rounded-[10rem] border-[0.1rem] border-var-line-200 px-[4rem] py-[1.2rem] sm:mt-[8rem]'
+            onClick={handleFetchNextPage}
+          >
             <Image src={plus} alt='더보기' width={24} height={24} />
             <span className='text-[2rem] font-[500] text-var-blue-500'>에피그램 더보기</span>
           </button>

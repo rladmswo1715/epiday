@@ -59,8 +59,8 @@ module.exports = {
         iropke: ['Iropke', 'sans-serif'],
       },
       screens: {
-        sm: { max: '768px' }, // mobile
-        md: { max: '1024px' }, // tablet
+        sm: '768px', // mobile
+        md: '1024px', // tablet
       },
       zIndex: {
         dropdown: 900,

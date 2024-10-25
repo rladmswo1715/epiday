@@ -8,7 +8,7 @@ import { Element } from 'react-scroll';
 
 const MainAfterLogin = () => {
   return (
-    <section className='flex flex-col gap-[14rem] py-[12rem]'>
+    <section className='flex flex-col gap-[8rem] py-[6rem] sm:gap-[14rem] sm:py-[12rem]'>
       <Element name='top'>
         <TodayEpidayContainer />
       </Element>

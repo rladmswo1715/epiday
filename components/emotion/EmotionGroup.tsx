@@ -33,7 +33,7 @@ const EmotionGroup = () => {
   };
 
   return (
-    <div className='mx-auto flex gap-[1.6rem]'>
+    <div className='flex sm:mx-auto sm:gap-[1.6rem]'>
       {EMOTION_OPTIONS.map((item) => {
         return <EmotionItem key={item.id} src={item.src} emotionText={item.emotionText} value={item.value} isSelected={todayEmotion === item.value} handleGetTodayEmotion={handleGetTodayEmotion} />;
       })}

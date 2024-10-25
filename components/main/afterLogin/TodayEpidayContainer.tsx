@@ -25,7 +25,7 @@ const TodayEpidayContainer = () => {
 
   return (
     <div>
-      <h3 className='mb-[4rem] text-[2.4rem] font-[600] text-var-black-600'>오늘의 에피데이</h3>
+      <h3 className='mb-[2rem] text-[2.4rem] font-[600] text-var-black-600 sm:mb-[4rem]'>오늘의 에피데이</h3>
       {data ? (
         <EpidayCard epidayData={data} />
       ) : (

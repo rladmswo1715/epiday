@@ -93,7 +93,7 @@ const SearchContainer = () => {
   if (!data && isLoading) return <Spinner />;
 
   return (
-    <section className='pb-[15rem] pt-[2.4rem]'>
+    <section className='pb-[10rem] pt-[1.5rem] sm:pb-[15rem] sm:pt-[2.4rem]'>
       <SearchForm value={searchText} onChange={handleChangeText} onSubmit={handleSearch} />
       <RecentSearches searchList={recentSearchList} onTextClick={handleClickRecentText} setRecentSearchList={setRecentSearchList} />
       <SearchResults searchFlatMapList={epidayFlatMapList} searchText={searchText} />

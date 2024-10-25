@@ -30,7 +30,7 @@ const EmotionItem = ({ src, emotionText, value, isSelected, handleGetTodayEmotio
   };
 
   return (
-    <button type='button' className='flex flex-col items-center gap-[0.8rem]' value={value} onClick={handleClickEmotion}>
+    <button type='button' className='flex flex-grow flex-col items-center gap-[0.8rem] md:flex-none' value={value} onClick={handleClickEmotion}>
       <div className={classNames('rounded-[1.6rem] bg-var-background-emotion p-[1.6rem]', { 'border-4 border-var-illust-yellow': isSelected })}>
         <Image src={src} alt={emotionText} width={48} height={48} />
       </div>

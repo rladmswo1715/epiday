@@ -16,8 +16,10 @@ const EpidayCard = ({ epidayData }: IEpidayCardProps) => {
           backgroundImage: 'repeating-linear-gradient(white, white 21px, #F2F2F2 24px)',
         }}
       >
-        <q className='line-clamp-4 h-[18rem] break-words px-[2.4rem] pt-[2.4rem] font-iropke text-[2.4rem] leading-[4rem] text-var-black-600 quotes-none'>{epidayData.content}</q>
-        <div className='mt-[2rem] min-h-[6.48rem] bg-white px-[2.4rem] pb-[2.4rem] text-right'>
+        <q className='line-clamp-2 h-[10rem] break-words px-[2.4rem] pt-[2.4rem] font-iropke text-[2.4rem] leading-[4rem] text-var-black-600 quotes-none sm:line-clamp-4 sm:h-[18rem]'>
+          {epidayData.content}
+        </q>
+        <div className='mt-[1rem] min-h-[6.48rem] bg-white px-[2.4rem] pb-[2.4rem] text-right sm:mt-[2rem]'>
           <cite className='font-iropke text-[2.4rem] leading-[4rem] text-var-blue-400'>{authorFilter(epidayData.author)}</cite>
         </div>
       </Link>

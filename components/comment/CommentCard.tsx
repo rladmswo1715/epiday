@@ -67,15 +67,15 @@ const CommentCard = ({ cardData }: ICommentCardProps) => {
   };
 
   return (
-    <div className='flex gap-[1.6rem] border-t-[0.1rem] border-var-line-200 bg-var-background px-[2.4rem] py-[3.5rem]'>
+    <div className='flex gap-[1.6rem] border-t-[0.1rem] border-var-line-200 bg-var-background px-[2.4rem] py-[3rem] sm:py-[3.5rem]'>
       <ProfileImage size='48px' userSetting={cardData?.writer.image} onClick={handleOpenProfile} />
       <div className='w-[52.8rem]'>
         <div className='flex items-center justify-between'>
           <p className='space-x-[0.8rem] text-[1.6rem] leading-[2.6rem] text-var-black-300'>
-            <button type='button' onClick={handleOpenProfile}>
+            <button type='button' className='font-bold' onClick={handleOpenProfile}>
               {cardData?.writer.nickname}
             </button>
-            <span>{timeAgo(cardData?.createdAt)}</span>
+            <span className='text-var-black-200'>{timeAgo(cardData?.createdAt)}</span>
           </p>
           <div className='flex gap-[1.6rem] text-[1.6rem] leading-[1.8rem] underline-offset-[0.2rem]'>
             {(pathName === '/epidays' || pathName.startsWith('/mypage')) && (
@@ -116,7 +116,7 @@ const CommentCard = ({ cardData }: ICommentCardProps) => {
             <VisibilityToggle isVisible={isVisible} setIsVisible={setIsVisible} />
           </>
         ) : (
-          <p className='mt-[1.6rem] whitespace-pre-line break-words text-[2rem] text-var-black-700'>{cardData?.content}</p>
+          <p className='mt-[1.6rem] whitespace-pre-line break-words text-[1.6rem] text-var-black-700 sm:text-[2rem]'>{cardData?.content}</p>
         )}
       </div>
     </div>

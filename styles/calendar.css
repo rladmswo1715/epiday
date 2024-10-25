@@ -105,3 +105,12 @@
   font-weight: 700;
 }
 
+@media (max-width: 768px) {
+  .custom .react-calendar__navigation {
+    margin-bottom: 22px;
+  }
+
+  .react-calendar__month-view__weekdays__weekday {
+    height: 64px;
+  }
+}
