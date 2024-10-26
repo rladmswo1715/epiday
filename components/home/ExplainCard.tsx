@@ -37,9 +37,9 @@ interface IExplainCardProps {
 
 const ExplainCard = ({ order, isReversed }: IExplainCardProps) => {
   return (
-    <div className={`mx-auto grid max-w-[118.8rem] grid-cols-[auto_1fr] items-end gap-[8rem] ${isReversed ? 'grid-flow-col-dense' : ''}`}>
-      <Image className={`${isReversed ? 'order-2' : 'order-1'}`} src={cardContent[order].img} alt='예시' width={744} height={388} />
-      <div className={`${isReversed ? 'order-1 text-right' : 'order-2 text-left'}`}>
+    <div className={`mx-auto grid max-w-[118.8rem] grid-cols-1 items-center gap-[8rem] px-[2rem] text-center md:grid-cols-[auto_1fr] md:px-0 ${isReversed ? 'md:grid-flow-col-dense' : ''}`}>
+      <Image className={`mx-auto ${isReversed ? 'md:order-2' : 'md:order-1'}`} src={cardContent[order].img} alt='예시' width={744} height={388} />
+      <div className={`${isReversed ? 'md:order-1 md:text-right' : 'md:order-2 md:text-left'}`}>
         <div>
           {cardContent[order].title.map((line: string, index: number) => (
             <p className='text-[3.2rem] font-[700] leading-[4.6rem] text-var-black-950' key={index}>
@@ -47,13 +47,13 @@ const ExplainCard = ({ order, isReversed }: IExplainCardProps) => {
             </p>
           ))}
         </div>
-        <p className='mt-[4rem]'>
+        <div className='mt-[4rem]'>
           {cardContent[order].content.map((line: string, index: number) => (
             <p className='text-[2.4rem] font-[500] text-var-blue-600' key={index}>
               {line}
             </p>
           ))}
-        </p>
+        </div>
       </div>
     </div>
   );

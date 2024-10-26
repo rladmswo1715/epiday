@@ -108,7 +108,7 @@ const CommentCard = ({ cardData }: ICommentCardProps) => {
         {isEditing ? (
           <>
             <textarea
-              className='mt-[1.6rem] w-[52.8rem] overflow-scroll rounded-[0.8rem] border-[0.1rem] border-var-line-200 px-[1.6rem] py-[1.2rem] text-[2rem] scrollbar-hide'
+              className='mt-[1.6rem] w-full overflow-scroll rounded-[0.8rem] border-[0.1rem] border-var-line-200 px-[1.6rem] py-[1.2rem] text-[1.6rem] leading-[2.2rem] scrollbar-hide sm:text-[2rem] sm:leading-[3.2rem]'
               value={contentValue}
               onChange={handleCommentChange}
               maxLength={100}

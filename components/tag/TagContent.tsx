@@ -33,11 +33,11 @@ const TagContent = () => {
   return (
     <>
       <AddTagInput value={tagInputValue} onChange={handleInputChange} onKeyup={handleAddTagList} onKeyDown={handleKeyDown} />
-      <div className='mt-[2.2rem] flex flex-wrap gap-[1rem] sm:mt-[1.5rem] sm:gap-[0.8rem]'>
+      <div className='mt-[1.5rem] flex flex-wrap gap-[0.8rem] sm:mt-[2.2rem] sm:gap-[1rem]'>
         {tagList.length > 0 &&
           tagList.map((tag) => {
             return (
-              <span key={tag} className='rounded-[2.2rem] bg-var-background px-[1.2rem] py-[1.4rem] text-[2.4rem] leading-[2.6rem] text-var-black-300 sm:py-[0.8rem] sm:text-[1.6rem]'>
+              <span key={tag} className='rounded-[2.2rem] bg-var-background px-[1.2rem] py-[0.8rem] text-[1.6rem] leading-[2.6rem] text-var-black-300 sm:py-[1.4rem] sm:text-[2.4rem]'>
                 {tag}
               </span>
             );

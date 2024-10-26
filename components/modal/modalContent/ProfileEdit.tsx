@@ -65,7 +65,7 @@ const Profile = () => {
   };
 
   return (
-    <form className='w-[40rem] rounded-[2.4rem] bg-var-background px-[4rem] pb-[3.2rem] pt-[2.4rem]'>
+    <form className='w-[36rem] rounded-[2.4rem] bg-var-background px-[4rem] pb-[3.2rem] pt-[2.4rem] sm:w-[40rem]'>
       <div className='flex items-center justify-between'>
         <h3 className='text-[1.8rem] font-[600] text-var-black-500'>프로필 편집</h3>
         <button

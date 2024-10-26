@@ -69,7 +69,7 @@ const CommentsContainer = ({ epidayId }: { epidayId: number }) => {
   };
 
   return (
-    <section className='bg-var-background pb-[10rem] pt-[3rem] sm:pb-[22.8rem] sm:pt-[4.8rem]'>
+    <section className='bg-var-background pb-[8rem] pt-[3rem] sm:pb-[22.8rem] sm:pt-[4.8rem]'>
       {isPending && <Spinner />}
       <InnerLayout>
         <h3 className='text-[2rem] font-[600] text-var-black-600'>댓글 ({data?.pages[0].totalCount})</h3>

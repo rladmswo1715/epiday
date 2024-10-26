@@ -11,7 +11,7 @@ interface ICommentGroupProps {
 const CommentGroup = ({ commentsData }: ICommentGroupProps) => {
   if (!commentsData || commentsData.length === 0) {
     return (
-      <div className='mt-[2.5rem] flex flex-col items-center gap-[2.4rem] px-[16rem] py-[12.8rem] sm:mt-[4rem]'>
+      <div className='mt-[2.5rem] flex flex-col items-center gap-[2.4rem] px-[16rem] py-[8rem] sm:mt-[4rem] sm:py-[12.8rem]'>
         <Image src={noData} alt='댓글 없음' width={144} height={144} />
         <div>
           <p className='text-center text-[2rem] text-var-black-600'>

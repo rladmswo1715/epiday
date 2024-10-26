@@ -10,7 +10,7 @@ interface ITextInputProps {
 const AddTagInput = ({ value, onChange, onKeyup, onKeyDown }: ITextInputProps) => {
   return (
     <input
-      className='h-[6.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1.6rem] text-[2rem] focus:outline-none sm:h-[4.4rem] sm:text-[1.6rem] sm:leading-[2.6rem]'
+      className='h-[4.4rem] rounded-[1.2rem] border-[0.1rem] border-var-blue-300 px-[1.6rem] text-[1.6rem] leading-[2.6rem] focus:outline-none sm:h-[6.4rem] sm:text-[2rem] sm:leading-[3.2rem]'
       value={value}
       onChange={onChange}
       onKeyUp={onKeyup}

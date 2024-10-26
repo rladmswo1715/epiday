@@ -62,13 +62,13 @@ const LandingPage = () => {
       {showMore && (
         <>
           <div id='moreSection' className='pb-[21rem]'>
-            <div className='mt-[24rem] space-y-[38rem]'>
+            <div className='mt-[24rem] space-y-[30rem] md:text-center'>
               <ExplainCard isReversed={false} order='first' />
               <ExplainCard isReversed={true} order='second' />
               <ExplainCard isReversed={false} order='third' />
             </div>
           </div>
-          <div className='mt-[20rem] flex flex-col items-center pb-[6rem]'>
+          <div className='mt-[15rem] flex flex-col items-center pb-[6rem]'>
             <span className='text-[3.2rem] font-[700] leading-[4.6rem] text-var-black-950'>
               사용자들이 직접
               <br />
