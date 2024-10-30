@@ -10,7 +10,7 @@ import { useMutation } from '@tanstack/react-query';
 import { TPatchUser } from '@/types/user';
 import { useSession } from 'next-auth/react';
 
-const DEFAULT_IMAGE_URL = `http://localhost:3000/images/icon/default-user.svg`;
+const DEFAULT_IMAGE_URL = process.env.NEXT_PUBLIC_DEFAULT_IMG_PATH;
 
 const Profile = () => {
   const { update } = useSession();
