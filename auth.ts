@@ -33,7 +33,7 @@ export const {
             }),
           });
           let setCookie = res.headers.get('Set-Cookie');
-          console.log('set-cookie', setCookie);
+
           const data = await res.json();
 
           if (!res.ok) {
