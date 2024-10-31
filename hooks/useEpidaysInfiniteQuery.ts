@@ -1,4 +1,4 @@
-import { getEpidayList } from '@/api/getEpiday';
+import { getEpidayList } from '@/apis/getEpiday';
 import { IEpidayList } from '@/types/epiday';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';

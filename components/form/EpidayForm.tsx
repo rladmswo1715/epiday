@@ -8,12 +8,12 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import TagContent from '@/components/tag/TagContent';
 import { useTagStore } from '@/store/tagStore';
-import { postAddEpiday } from '@/api/postEpiday';
+import { postAddEpiday } from '@/apis/postEpiday';
 import { useSession } from 'next-auth/react';
 import Spinner from '@/components/Spinner';
 import { useRouter } from 'next/navigation';
 import { addEpidaySchema, AddEpidaySchema } from '@/schema/addEpidaySchema';
-import { patchEpiday } from '@/api/patchEpiday';
+import { patchEpiday } from '@/apis/patchEpiday';
 import InnerLayout from '../InnerLayout';
 
 type EpidayFormProps = {

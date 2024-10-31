@@ -1,4 +1,4 @@
-import { getTodayEmotion, postTodayEmotion } from '@/api/emotion';
+import { getTodayEmotion, postTodayEmotion } from '@/apis/emotion';
 import { TEmotions } from '@/types/emotion';
 import { create } from 'zustand';
 

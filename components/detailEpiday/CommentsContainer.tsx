@@ -5,7 +5,7 @@ import CommentGroup from '../comment/CommentGroup';
 import ProfileImage from '../ProfileImage';
 import VisibilityToggle from '../VisibilityToggle';
 import { useMutation } from '@tanstack/react-query';
-import { postAddComment } from '@/api/comments';
+import { postAddComment } from '@/apis/comments';
 import { useEffect, useState } from 'react';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import Spinner from '../Spinner';

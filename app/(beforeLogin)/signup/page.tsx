@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Logo from '@/public/images/icon/logo.svg';
 import SignSns from '@/components/SignSns';
 import { useState } from 'react';
-import { postSignUp } from '@/api/user';
+import { postSignUp } from '@/apis/user';
 import AuthInput from '@/components/input/AuthInput';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

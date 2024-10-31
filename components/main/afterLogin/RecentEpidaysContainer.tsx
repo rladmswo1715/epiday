@@ -1,4 +1,4 @@
-import { getEpidayList } from '@/api/getEpiday';
+import { getEpidayList } from '@/apis/getEpiday';
 import EpidayCard from '@/components/feed/EpidayCard';
 import { useQuery } from '@tanstack/react-query';
 import { Fragment } from 'react';

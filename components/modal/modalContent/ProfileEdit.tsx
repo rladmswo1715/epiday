@@ -4,7 +4,7 @@ import close from '@/public/images/icon/close.svg';
 import { useModalStore } from '@/store/modalStore';
 import ProfileImage from '@/components/ProfileImage';
 import { useRef, useState } from 'react';
-import { patchEditProfile, postProfileImageUrl } from '@/api/user';
+import { patchEditProfile, postProfileImageUrl } from '@/apis/user';
 import { editProfileSchema } from '@/schema/editProfileSchema';
 import { useMutation } from '@tanstack/react-query';
 import { TPatchUser } from '@/types/user';

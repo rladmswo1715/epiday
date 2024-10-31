@@ -5,7 +5,7 @@ import prevArrow from '@/public/images/icon/arrow-left.svg';
 import nextArrow from '@/public/images/icon/arrow-right.svg';
 import { format, startOfMonth } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
-import { getMonthlyEmotion } from '@/api/emotion';
+import { getMonthlyEmotion } from '@/apis/emotion';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import emotionMoved from '@/public/images/icon/emotion-moved.svg';

@@ -1,4 +1,4 @@
-import { getCommentList, getEpidayCommentsById, getUserComments } from '@/api/comments';
+import { getCommentList, getEpidayCommentsById, getUserComments } from '@/apis/comments';
 import { ICommentsList } from '@/types/comments';
 import { InfiniteData, useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';

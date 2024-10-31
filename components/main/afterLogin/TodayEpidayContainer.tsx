@@ -1,4 +1,4 @@
-import { getTodayEpiday } from '@/api/getEpiday';
+import { getTodayEpiday } from '@/apis/getEpiday';
 import EpidayCard from '@/components/feed/EpidayCard';
 import { IEpidayData } from '@/types/epiday';
 import { useQuery } from '@tanstack/react-query';

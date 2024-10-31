@@ -2,7 +2,7 @@ import useModalScrollBlock from '@/hooks/useModalScrollBlock';
 import { useModalStore } from '@/store/modalStore';
 import Image from 'next/image';
 import confirmLogo from '@/public/images/icon/confirm.svg';
-import { deleteComment } from '@/api/comments';
+import { deleteComment } from '@/apis/comments';
 import { useSession } from 'next-auth/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';

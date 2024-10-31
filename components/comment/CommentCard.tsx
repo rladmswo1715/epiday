@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import VisibilityToggle from '../VisibilityToggle';
 import { addCommentSchema } from '@/schema/addCommentSchema';
 import { useSession } from 'next-auth/react';
-import { patchUpdateComment } from '@/api/comments';
+import { patchUpdateComment } from '@/apis/comments';
 import { IComment, TCommentData } from '@/types/comments';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';

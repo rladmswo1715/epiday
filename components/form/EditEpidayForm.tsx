@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import EpidayForm from './EpidayForm';
-import { getEpidayData } from '@/api/getEpiday';
+import { getEpidayData } from '@/apis/getEpiday';
 import { useSession } from 'next-auth/react';
 import Spinner from '../Spinner';
 import { AddEpidaySchema } from '@/schema/addEpidaySchema';

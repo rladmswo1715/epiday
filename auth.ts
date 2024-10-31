@@ -4,7 +4,7 @@ import Kakao from 'next-auth/providers/kakao';
 import BASE_URL from '@/constant/url';
 import { jwtDecode } from 'jwt-decode';
 import { JWT } from '@auth/core/jwt';
-import { getMyInfo } from './api/user';
+import { getMyInfo } from './apis/user';
 
 export const {
   handlers: { GET, POST },
