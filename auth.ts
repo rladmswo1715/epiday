@@ -1,6 +1,5 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import Kakao from 'next-auth/providers/kakao';
 import BASE_URL from '@/constant/url';
 import { jwtDecode } from 'jwt-decode';
 import { JWT } from '@auth/core/jwt';
@@ -21,8 +20,33 @@ export const {
       credentials: {
         email: {},
         password: {},
+        code: {},
       },
       authorize: async (credentials) => {
+        if (credentials?.code) {
+          const res = await fetch(`${BASE_URL}/auth/signIn/KAKAO`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
+              token: credentials.code,
+            }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            throw new Error(data.message || '카카오 로그인 실패');
+          }
+
+          return {
+            ...data.user,
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+            provider: 'kakao',
+          };
+        }
+
         try {
           const res = await fetch(`${BASE_URL}/auth/signIn`, {
             method: 'POST',
@@ -32,7 +56,6 @@ export const {
               password: credentials.password,
             }),
           });
-          let setCookie = res.headers.get('Set-Cookie');
 
           const data = await res.json();
 
@@ -44,15 +67,12 @@ export const {
             ...data.user,
             accessToken: data.accessToken,
             refreshToken: data.refreshToken,
+            provider: 'credentials',
           };
         } catch (e) {
           throw new Error(e.message || '인증 실패');
         }
       },
-    }),
-    Kakao({
-      clientId: process.env.AUTH_KAKAO_ID,
-      // clientSecret: process.env.AUTH_KAKAO_SECRET,
     }),
   ],
   callbacks: {
@@ -62,16 +82,27 @@ export const {
         token.email = user.email;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
+        token.provider = user.provider;
 
-        const decodedAccessToken: { exp: number } = jwtDecode(user.accessToken);
-        token.accessTokenExpires = decodedAccessToken.exp * 1000;
+        if (user.provider === 'credentials') {
+          try {
+            const decodedToken = jwtDecode(user.accessToken);
+            token.accessTokenExpires = decodedToken.exp * 1000;
+          } catch (error) {
+            console.error('Access Token 디코딩 실패:', error);
+            token.accessTokenExpires = Date.now() + 60 * 60 * 1000;
+          }
+        }
       }
 
-      if (typeof token.accessTokenExpires === 'number' && Date.now() < token.accessTokenExpires) {
-        return token;
+      if (token.provider === 'credentials' && token.accessTokenExpires) {
+        if (typeof token.accessTokenExpires === 'number' && Date.now() < token.accessTokenExpires) {
+          return token;
+        }
+        return refreshAccessToken(token);
       }
 
-      return refreshAccessToken(token);
+      return token;
     },
     async session({ session, token }) {
       if (token) {
@@ -84,6 +115,7 @@ export const {
         session.nickname = authResponse.nickname;
         session.image = authResponse.image;
       }
+
       return session;
     },
   },
@@ -118,6 +150,7 @@ async function refreshAccessToken(token: JWT) {
       ...token,
       accessToken: refreshedTokens.accessToken,
       refreshToken: refreshedTokens.refreshToken || token.refreshToken,
+      accessTokenExpires: Date.now() + refreshedTokens.expiresIn * 1000,
     };
   } catch (error) {
     console.error('리프레시 토큰 Error ::', error);
