@@ -2,7 +2,7 @@
 import Spinner from '@/components/Spinner';
 import { signIn } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 const KakaoLogin = () => {
   const searchParams = useSearchParams();
@@ -39,4 +39,12 @@ const KakaoLogin = () => {
   return <>{loading && <Spinner />}</>;
 };
 
-export default KakaoLogin;
+const KakaoLoginWrapper = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <KakaoLogin />
+    </Suspense>
+  );
+};
+
+export default KakaoLoginWrapper;
