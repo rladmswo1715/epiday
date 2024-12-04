@@ -77,7 +77,7 @@ export const {
     }),
     Google({
       clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       async profile(profile, account) {
         try {
           const res = await fetch(`${BASE_URL}/auth/signIn/GOOGLE`, {
