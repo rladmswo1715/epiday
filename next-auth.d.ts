@@ -12,12 +12,13 @@ declare module 'next-auth' {
 
   interface User {
     id: string;
+    customId?: string;
     nickname: string;
     email: string;
     image?: string;
     accessToken?: string;
     refreshToken?: string;
-    provider: 'credentials' | 'kakao';
+    provider: 'credentials' | 'kakao' | 'google';
   }
 
   interface JWT {

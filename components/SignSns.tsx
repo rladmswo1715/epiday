@@ -3,6 +3,7 @@ import Stroke from '@/public/images/icon/stroke.svg';
 import Google from '@/public/images/icon/logo_google.svg';
 import Kakao from '@/public/images/icon/logo_kakao.svg';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
 
 interface ISignSnsProps {
   pageType: 'login' | 'signUp';
@@ -15,6 +16,9 @@ export default function SignSns({ pageType }: ISignSnsProps) {
   const KAKAO_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI;
   const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_APP_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
+  const handleGoogleLogin = async () => {
+    const result = await signIn('google', { redirect: true, callbackUrl: '/epidays' });
+  };
   return (
     <div>
       <div className='flex gap-[2.4rem]'>
@@ -23,7 +27,7 @@ export default function SignSns({ pageType }: ISignSnsProps) {
         <Image src={Stroke} alt='장식선' width={180} height={1} />
       </div>
       <div className='mt-[4rem] flex justify-center gap-[1.6rem]'>
-        <button>
+        <button onClick={handleGoogleLogin}>
           <Image src={Google} alt='구글 로그인' width={60} height={60} />
         </button>
         <button>

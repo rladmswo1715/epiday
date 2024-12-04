@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import Google from 'next-auth/providers/google';
 import BASE_URL from '@/constant/url';
 import { jwtDecode } from 'jwt-decode';
 import { JWT } from '@auth/core/jwt';
@@ -74,11 +75,37 @@ export const {
         }
       },
     }),
+    Google({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      async profile(profile, account) {
+        try {
+          const res = await fetch(`${BASE_URL}/auth/signIn/GOOGLE`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              token: account.id_token,
+            }),
+          });
+          const data = await res.json();
+          return {
+            ...data.user,
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+            provider: 'google',
+            customId: data.user.id,
+          };
+        } catch (error) {
+          console.error('구글로그인 error:', error);
+        }
+      },
+    }),
   ],
+
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id;
+        token.id = user.customId || user.id;
         token.email = user.email;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
